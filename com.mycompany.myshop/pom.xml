@@ -17,6 +17,8 @@
     
     <junit.version>4.12</junit.version>
     <jacoco.version>0.8.6</jacoco.version>
+    <coveralls.version>4.3.0</coveralls.version>
+    <jaxb.api.version>2.3.1</jaxb.api.version>
   </properties>
 
   <dependencies>
@@ -51,6 +53,20 @@
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <groupId>org.eluder.coveralls</groupId>
+          <artifactId>coveralls-maven-plugin</artifactId>
+          <version>${coveralls.version}</version>
+          <dependencies>
+            <!-- This is required when using JDK 9 or higher
+              since javax.xml.bind has been removed from the JDK -->
+            <dependency>
+              <groupId>javax.xml.bind</groupId>
+              <artifactId>jaxb-api</artifactId>
+              <version>${jaxb.api.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -64,6 +80,32 @@
             <!-- configured in pluginManagement -->
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>coveralls</id>
+      <build>
+        <plugins>
+          <plugin>
+            <!-- configured in pluginManagement -->
+            <!-- JaCoCo report is required by coveralls-maven-plugin -->
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <!-- configured in pluginManagement -->
+            <groupId>org.eluder.coveralls</groupId>
+            <artifactId>coveralls-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
