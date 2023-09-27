@@ -27,3 +27,15 @@ jobs:
       working-directory: ${{ env.workdir }}
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
+    - name: Generate JUnit Report
+      run: >
+        mvn surefire-report:report-only site:site -DgenerateReports=false
+      working-directory: ${{ env.workdir }}
+      if: ${{ failure() }}
+    - name: Archive JUnit Report
+      uses: actions/upload-artifact@v2
+      if: ${{ failure() }}
+      with:
+        name: surefire-report-jdk-${{ matrix.java }}
+        path: '**/target/site'
+    
