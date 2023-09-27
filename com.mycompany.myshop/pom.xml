@@ -24,6 +24,7 @@
     <jaxb.api.version>2.3.1</jaxb.api.version>
     <surefire.report.version>2.22.2</surefire.report.version>
     <maven.site.version>3.9.1</maven.site.version>
+    <build.helper.version>3.0.0</build.helper.version>
   </properties>
 
   <dependencies>
@@ -38,7 +39,7 @@
   <build>
     <pluginManagement>
       <plugins>
-      <plugin>
+        <plugin>
           <artifactId>maven-surefire-report-plugin</artifactId>
           <version>${surefire.report.version}</version>
         </plugin>
@@ -82,6 +83,41 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build.helper.version}</version>
+        <executions>
+          <execution>
+            <id>add-test-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/bdd/java</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-resource</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>add-test-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>src/bdd/resources</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>
