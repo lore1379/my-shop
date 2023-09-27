@@ -25,6 +25,7 @@
     <surefire.report.version>2.22.2</surefire.report.version>
     <maven.site.version>3.9.1</maven.site.version>
     <build.helper.version>3.0.0</build.helper.version>
+    <failsafe.version>2.22.2</failsafe.version>
   </properties>
 
   <dependencies>
@@ -113,6 +114,28 @@
                   <directory>src/bdd/resources</directory>
                 </resource>
               </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${failsafe.version}</version>
+        <executions>
+          <execution>
+            <id>bdd-tests</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <excludes>
+                <exclude>**/*IT.java</exclude>
+              </excludes>
+              <includes>
+                <include>**/*BDD.java</include>
+              </includes>
             </configuration>
           </execution>
         </executions>
