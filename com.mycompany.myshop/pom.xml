@@ -26,6 +26,7 @@
     <maven.site.version>3.9.1</maven.site.version>
     <build.helper.version>3.0.0</build.helper.version>
     <failsafe.version>2.22.2</failsafe.version>
+    <cucumber.version>5.5.0</cucumber.version>
   </properties>
 
   <dependencies>
@@ -33,6 +34,18 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
