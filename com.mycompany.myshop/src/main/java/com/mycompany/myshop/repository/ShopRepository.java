@@ -9,7 +9,7 @@ public interface ShopRepository {
 
 	public List<Product> findAllProducts();
 
-	public Product findById(String id);
+	public Product findProductById(String id);
 
 	public Cart findCart(String string);
 

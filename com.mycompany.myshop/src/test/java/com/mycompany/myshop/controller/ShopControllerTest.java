@@ -58,5 +58,14 @@ public class ShopControllerTest {
 		shopController.getCart("1");
 		verify(shopView).showCart(cart);
 	}
+	
+	@Test
+	public void testAddProductToCartWhenProductExists() {
+		Product productToAdd = new Product("1", "test");
+		when(shopRepository.findProductById("1"))
+			.thenReturn(productToAdd);
+		shopController.addProductToCart(productToAdd);
+		verify(shopView).productAddedToCart(productToAdd);
+	}
 
 }

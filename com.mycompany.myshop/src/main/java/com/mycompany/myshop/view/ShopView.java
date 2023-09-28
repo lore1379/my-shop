@@ -11,4 +11,6 @@ public interface ShopView {
 
 	void showCart(Cart cart);
 
+	void productAddedToCart(Product product);
+
 }
