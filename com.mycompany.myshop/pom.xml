@@ -29,6 +29,11 @@
     <cucumber.version>5.5.0</cucumber.version>
     <assertj.swing.version>3.17.1</assertj.swing.version>
     <mockito.version>4.11.0</mockito.version>
+    
+    <!-- Exclude model from sonarCloud code coverage -->
+    <sonar.coverage.exclusions>
+			**/model/*.*,
+	</sonar.coverage.exclusions>
   </properties>
 
   <dependencies>
