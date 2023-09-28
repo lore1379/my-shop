@@ -1,8 +1,5 @@
 package com.mycompany.myshop.controller;
 
-import java.util.List;
-
-import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.repository.ShopRepository;
 import com.mycompany.myshop.view.ShopView;
 
@@ -17,8 +14,7 @@ public class ShopController {
 	}
 
 	public void allProducts() {
-		List<Product> products = shopRepository.findAll();
-		shopView.showAllProducts(products);
+		shopView.showAllProducts(shopRepository.findAll());
 	}
 
 }
