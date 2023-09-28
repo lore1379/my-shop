@@ -6,6 +6,8 @@ import com.mycompany.myshop.model.Product;
 
 public interface ShopRepository {
 
-	List<Product> findAll();
+	public List<Product> findAllProducts();
+
+	public Product findById(String id);
 
 }

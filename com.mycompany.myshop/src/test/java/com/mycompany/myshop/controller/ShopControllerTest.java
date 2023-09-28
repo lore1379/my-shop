@@ -43,9 +43,8 @@ public class ShopControllerTest {
 	@Test
 	public void testAllProducts() {
 		List<Product> products = asList(new Product());
-		when(shopRepository.findAll())
+		when(shopRepository.findAllProducts())
 			.thenReturn(products);
-		shopController = new ShopController(shopView, shopRepository);
 		shopController.allProducts();
 		verify(shopView).showAllProducts(products);
 	}
