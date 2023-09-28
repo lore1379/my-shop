@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.repository.ShopRepository;
 import com.mycompany.myshop.view.ShopView;
@@ -47,6 +48,15 @@ public class ShopControllerTest {
 			.thenReturn(products);
 		shopController.allProducts();
 		verify(shopView).showAllProducts(products);
+	}
+	
+	@Test
+	public void testGetCart() {
+		Cart cart = new Cart("1");
+		when(shopRepository.findCart("1"))
+			.thenReturn(cart);
+		shopController.getCart("1");
+		verify(shopView).showCart(cart);
 	}
 
 }

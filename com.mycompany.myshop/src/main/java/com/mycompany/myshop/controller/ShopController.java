@@ -17,4 +17,9 @@ public class ShopController {
 		shopView.showAllProducts(shopRepository.findAllProducts());
 	}
 
+	public void getCart(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
