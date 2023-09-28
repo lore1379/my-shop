@@ -1,6 +1,7 @@
 package com.mycompany.myshop.controller;
 
 import com.mycompany.myshop.model.Cart;
+import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.repository.ShopRepository;
 import com.mycompany.myshop.view.ShopView;
 
@@ -21,6 +22,11 @@ public class ShopController {
 	public void getCart(String id) {
 		Cart cart = shopRepository.findCart(id);
 		shopView.showCart(cart);
+	}
+
+	public void addProductToCart(Product product) {
+		Product productToAdd = shopRepository.findProductById(product.getId());
+		shopView.productAddedToCart(productToAdd);
 	}
 
 }
