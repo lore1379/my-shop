@@ -1,5 +1,6 @@
 package com.mycompany.myshop.controller;
 
+import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.repository.ShopRepository;
 import com.mycompany.myshop.view.ShopView;
 
@@ -17,9 +18,9 @@ public class ShopController {
 		shopView.showAllProducts(shopRepository.findAllProducts());
 	}
 
-	public void getCart(String string) {
-		// TODO Auto-generated method stub
-		
+	public void getCart(String id) {
+		Cart cart = shopRepository.findCart(id);
+		shopView.showCart(cart);
 	}
 
 }
