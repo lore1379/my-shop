@@ -1,5 +1,7 @@
 package com.mycompany.myshop.repository.mongo;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -9,6 +11,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mycompany.myshop.model.Product;
 
 public class ShopMongoRepositoryDockerIT {
 	
@@ -38,7 +41,20 @@ public class ShopMongoRepositoryDockerIT {
 	}
 	
 	@Test
-	public void test() {
+	public void testFindAllProducts() {
+		addTestProductToDatabase("1", "test1");
+		addTestProductToDatabase("2", "test2");
+		assertThat(shopRepository.findAllProducts())
+			.containsExactly(
+					new Product("1", "test1"),
+					new Product("2", "test2"));
+	}
+	
+	private void addTestProductToDatabase(String id, String name) {
+		productCollection.insertOne(
+				new Document()
+				.append("id", id)
+				.append("name", name));
 	}
 
 }
