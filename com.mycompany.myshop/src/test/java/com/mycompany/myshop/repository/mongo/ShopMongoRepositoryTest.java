@@ -16,6 +16,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 
 import de.bwaldvogel.mongo.MongoServer;
@@ -91,6 +92,18 @@ public class ShopMongoRepositoryTest {
 	public void testFindCartNotFound() {
 		assertThat(shopRepository.findCart("1"))
 			.isNull();
+	}
+	
+	@Test
+	public void testFindCartFound() {
+		cartCollection.insertMany(asList(
+				new Document()
+					.append("id", "1"),
+				new Document()
+					.append("id", "2")));
+		assertThat(shopRepository.findCart("2"))
+			.isEqualTo(new Cart("2"));
+		
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
