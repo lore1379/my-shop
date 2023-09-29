@@ -1,5 +1,6 @@
 package com.mycompany.myshop.repository.mongo;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.mongodb.MongoClient;
@@ -15,8 +16,7 @@ public class ShopMongoRepository implements ShopRepository {
 
 	@Override
 	public List<Product> findAllProducts() {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
