@@ -1,6 +1,8 @@
 package com.mycompany.myshop.repository.mongo;
 
 import org.bson.Document;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.mongodb.MongoClient;
@@ -13,17 +15,30 @@ public class ShopMongoRepositoryDockerIT {
 	private static int mongoPort =
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
-	@Test
-	public void test() {
-		MongoClient mongoClient = new MongoClient(
+	private MongoClient mongoClient;
+	private ShopMongoRepository shopRepository;
+	private MongoCollection<Document> productCollection;
+	private MongoCollection<Document> cartCollection;
+	
+	@Before
+	public void setup() {
+		mongoClient = new MongoClient(
 				new ServerAddress("localhost", mongoPort));
-		ShopMongoRepository shopRepository = new ShopMongoRepository(mongoClient,
+		shopRepository = new ShopMongoRepository(mongoClient,
 				"shop", "product", "cart");
 		MongoDatabase database = mongoClient.getDatabase("shop");
 		database.drop();
-		MongoCollection<Document> productCollection = database.getCollection("product");
-		MongoCollection<Document> cartCollection = database.getCollection("cart");
-		mongoClient.close();
+		productCollection = database.getCollection("product");
+		cartCollection = database.getCollection("cart");		
+	}
+	
+	@After
+	public void onTearDown() throws Exception {
+		mongoClient.close();		
+	}
+	
+	@Test
+	public void test() {
 	}
 
 }
