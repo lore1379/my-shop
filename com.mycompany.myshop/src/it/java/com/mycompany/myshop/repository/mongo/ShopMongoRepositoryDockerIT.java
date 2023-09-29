@@ -1,5 +1,6 @@
 package com.mycompany.myshop.repository.mongo;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.bson.Document;
@@ -11,6 +12,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 
 public class ShopMongoRepositoryDockerIT {
@@ -51,11 +53,23 @@ public class ShopMongoRepositoryDockerIT {
 	}
 	
 	@Test
-	public void testFindProductByIdFound() {
+	public void testFindProductById() {
 		addTestProductToDatabase("1", "test1");
 		addTestProductToDatabase("2", "test2");
 		assertThat(shopRepository.findProductById("2"))
 			.isEqualTo(new Product("2", "test2"));
+		
+	}
+	
+	@Test
+	public void testFindCart() {
+		cartCollection.insertMany(asList(
+				new Document()
+					.append("id", "1"),
+				new Document()
+					.append("id", "2")));
+		assertThat(shopRepository.findCart("2"))
+			.isEqualTo(new Cart("2"));
 		
 	}
 	
