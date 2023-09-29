@@ -50,6 +50,15 @@ public class ShopMongoRepositoryDockerIT {
 					new Product("2", "test2"));
 	}
 	
+	@Test
+	public void testFindProductByIdFound() {
+		addTestProductToDatabase("1", "test1");
+		addTestProductToDatabase("2", "test2");
+		assertThat(shopRepository.findProductById("2"))
+			.isEqualTo(new Product("2", "test2"));
+		
+	}
+	
 	private void addTestProductToDatabase(String id, String name) {
 		productCollection.insertOne(
 				new Document()
