@@ -29,6 +29,7 @@
     <cucumber.version>5.5.0</cucumber.version>
     <assertj.swing.version>3.17.1</assertj.swing.version>
     <mockito.version>4.11.0</mockito.version>
+    <mongo.java.server.version>1.11.1</mongo.java.server.version>
     
     <!-- Exclude model from sonarCloud code coverage -->
     <sonar.coverage.exclusions>
@@ -65,6 +66,12 @@
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-junit</artifactId>
       <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.bwaldvogel</groupId>
+      <artifactId>mongo-java-server</artifactId>
+      <version>${mongo.java.server.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
