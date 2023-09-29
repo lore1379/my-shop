@@ -28,7 +28,7 @@ public class ShopMongoRepository implements ShopRepository {
 	public List<Product> findAllProducts() {
 		return StreamSupport
 				.stream(productCollection.find().spliterator(), false)
-				.map(d -> new Product("" + d.get("id"), "" + d.get("name")))
+				.map(this::fromDocumentToProduct)
 				.collect(Collectors.toList());
 	}
 
@@ -36,7 +36,7 @@ public class ShopMongoRepository implements ShopRepository {
 	public Product findProductById(String id) {
 		Document d = productCollection.find(Filters.eq("id", id)).first();
 		if (d != null)
-			return new Product("" + d.get("id"), "" + d.get("name"));
+			return fromDocumentToProduct(d);
 		return null;
 	}
 
@@ -46,4 +46,7 @@ public class ShopMongoRepository implements ShopRepository {
 		return null;
 	}
 
+	private Product fromDocumentToProduct(Document d) {
+		return new Product("" + d.get("id"), "" + d.get("name"));
+	}
 }

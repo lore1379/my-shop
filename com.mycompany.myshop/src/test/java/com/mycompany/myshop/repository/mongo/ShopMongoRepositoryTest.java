@@ -64,13 +64,8 @@ public class ShopMongoRepositoryTest {
 	
 	@Test
 	public void testFindAllProductsWhenDatabaseIsNotEmpty() {
-		productCollection.insertMany(asList(
-				new Document()
-					.append("id", "1")
-					.append("name", "test1"),
-				new Document()
-					.append("id", "2")
-					.append("name", "test2")));
+		addTestProductToDatabase("1", "test1");
+		addTestProductToDatabase("2", "test2");
 		assertThat(shopRepository.findAllProducts())
 			.containsExactly(
 					new Product("1", "test1"),
@@ -85,18 +80,19 @@ public class ShopMongoRepositoryTest {
 	
 	@Test
 	public void testFindProductByIdFound() {
-		productCollection.insertMany(asList(
-				new Document()
-					.append("id", "1")
-					.append("name", "test1"),
-				new Document()
-					.append("id", "2")
-					.append("name", "test2")));
+		addTestProductToDatabase("1", "test1");
+		addTestProductToDatabase("2", "test2");
 		assertThat(shopRepository.findProductById("2"))
 			.isEqualTo(new Product("2", "test2"));
 		
 	}
 	
+	private void addTestProductToDatabase(String id, String name) {
+		productCollection.insertOne(
+				new Document()
+				.append("id", id)
+				.append("name", name));
+	}
 	
 
 }
