@@ -87,6 +87,12 @@ public class ShopMongoRepositoryTest {
 		
 	}
 	
+	@Test
+	public void testFindCartNotFound() {
+		assertThat(shopRepository.findCart("1"))
+			.isNull();
+	}
+	
 	private void addTestProductToDatabase(String id, String name) {
 		productCollection.insertOne(
 				new Document()
