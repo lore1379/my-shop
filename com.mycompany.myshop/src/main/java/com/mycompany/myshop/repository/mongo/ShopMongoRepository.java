@@ -8,6 +8,7 @@ import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.repository.ShopRepository;
@@ -33,7 +34,9 @@ public class ShopMongoRepository implements ShopRepository {
 
 	@Override
 	public Product findProductById(String id) {
-		// TODO Auto-generated method stub
+		Document d = productCollection.find(Filters.eq("id", id)).first();
+		if (d != null)
+			return new Product("" + d.get("id"), "" + d.get("name"));
 		return null;
 	}
 
