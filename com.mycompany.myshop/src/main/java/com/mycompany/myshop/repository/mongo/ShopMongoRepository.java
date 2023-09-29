@@ -17,11 +17,15 @@ public class ShopMongoRepository implements ShopRepository {
 
 
 	private MongoCollection<Document> productCollection;
+	private MongoCollection<Document> cartCollection;
 
 	public ShopMongoRepository(MongoClient mongoClient, String databaseName, String firstCollectionName, String secondCollectionName) {
 		productCollection = mongoClient
 				.getDatabase(databaseName)
 				.getCollection(firstCollectionName);
+		cartCollection = mongoClient
+				.getDatabase(databaseName)
+				.getCollection(secondCollectionName);
 	}
 
 	@Override
@@ -41,8 +45,10 @@ public class ShopMongoRepository implements ShopRepository {
 	}
 
 	@Override
-	public Cart findCart(String string) {
-		// TODO Auto-generated method stub
+	public Cart findCart(String id) {
+		Document d = cartCollection.find(Filters.eq("id", id)).first();
+		if (d != null)
+			return new Cart("" + d.get("id"));
 		return null;
 	}
 
