@@ -1,6 +1,7 @@
 package com.mycompany.myshop.repository.mongo;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.Arrays.asList;
 
 import java.net.InetSocketAddress;
 
@@ -15,6 +16,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mycompany.myshop.model.Product;
+
 import de.bwaldvogel.mongo.MongoServer;
 import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 
@@ -57,6 +60,21 @@ public class ShopMongoRepositoryTest {
 	@Test
 	public void testFindAllProductsWhenDatabaseIsEmpty() {
 		assertThat(shopRepository.findAllProducts()).isEmpty();
+	}
+	
+	@Test
+	public void testFindAllProductsWhenDatabaseIsNotEmpty() {
+		productCollection.insertMany(asList(
+				new Document()
+					.append("id", "1")
+					.append("name", "test1"),
+				new Document()
+					.append("id", "2")
+					.append("name", "test2")));
+		assertThat(shopRepository.findAllProducts())
+			.containsExactly(
+					new Product("1", "test1"),
+					new Product("2", "test2"));
 	}
 
 }
