@@ -76,5 +76,13 @@ public class ShopMongoRepositoryTest {
 					new Product("1", "test1"),
 					new Product("2", "test2"));
 	}
+	
+	@Test
+	public void testFindProductByIdNotFound() {
+		assertThat(shopRepository.findProductById("1"))
+			.isNull();
+	}
+	
+	
 
 }
