@@ -83,6 +83,20 @@ public class ShopMongoRepositoryTest {
 			.isNull();
 	}
 	
+	@Test
+	public void testFindProductByIdFound() {
+		productCollection.insertMany(asList(
+				new Document()
+					.append("id", "1")
+					.append("name", "test1"),
+				new Document()
+					.append("id", "2")
+					.append("name", "test2")));
+		assertThat(shopRepository.findProductById("2"))
+			.isEqualTo(new Product("2", "test2"));
+		
+	}
+	
 	
 
 }
