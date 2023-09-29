@@ -30,6 +30,8 @@
     <assertj.swing.version>3.17.1</assertj.swing.version>
     <mockito.version>4.11.0</mockito.version>
     <mongo.java.server.version>1.11.1</mongo.java.server.version>
+    <mongo.driver.version>3.12.7</mongo.driver.version>
+    <logback.version>1.2.3</logback.version>
     
     <!-- Exclude model from sonarCloud code coverage -->
     <sonar.coverage.exclusions>
@@ -38,6 +40,17 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>${mongo.driver.version}</version>
+    </dependency>
+    <dependency>
+      <!-- required to see Mongo Java Driver logs -->
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
