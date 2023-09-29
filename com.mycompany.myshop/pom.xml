@@ -32,6 +32,7 @@
     <mongo.java.server.version>1.11.1</mongo.java.server.version>
     <mongo.driver.version>3.12.7</mongo.driver.version>
     <logback.version>1.2.3</logback.version>
+    <docker.version>0.34.1</docker.version>
     
     <!-- Exclude model from sonarCloud code coverage -->
     <sonar.coverage.exclusions>
@@ -175,7 +176,19 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>${failsafe.version}</version>
+        <configuration>
+          <systemPropertyVariables>
+            <mongo.port>${mongo.mapped.port}</mongo.port>
+          </systemPropertyVariables>
+        </configuration>
         <executions>
+          <execution>
+            <id>default-it</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
           <execution>
             <id>bdd-tests</id>
             <goals>
@@ -190,6 +203,39 @@
                 <include>**/*BDD.java</include>
               </includes>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>mongo:4.4.3</name>
+              <run>
+                <ports>
+                  <port>mongo.mapped.port:27017</port>
+                </ports>
+              </run>
+            </image>
+          </images>
+        </configuration>
+        <executions>
+          <execution>
+            <id>docker:start</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>docker:stop</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
