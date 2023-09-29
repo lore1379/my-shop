@@ -1,5 +1,7 @@
 package com.mycompany.myshop.repository.mongo;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.net.InetSocketAddress;
 
 import org.bson.Document;
@@ -53,8 +55,8 @@ public class ShopMongoRepositoryTest {
 	}
 	
 	@Test
-	public void testDBSetup() {
-
+	public void testFindAllProductsWhenDatabaseIsEmpty() {
+		assertThat(shopRepository.findAllProducts()).isEmpty();
 	}
 
 }
