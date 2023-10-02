@@ -47,7 +47,8 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 	
 	@Test
 	public void testAddToCartButtonShouldBeEnabledOnlyWhenAProductInShopIsSelected() {
-		shopSwingView.getListShopProductModel().addElement(new Product("1", "test"));
+		GuiActionRunner.execute(() ->
+			shopSwingView.getListShopProductModel().addElement(new Product("1", "test")));
 		window.list("productList").selectItem(0);
 		JButtonFixture addToCartButton =
 				window.button(JButtonMatcher.withText("Add to Cart"));
