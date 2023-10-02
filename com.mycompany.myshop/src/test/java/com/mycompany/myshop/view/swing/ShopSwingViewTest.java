@@ -97,7 +97,8 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 			listShopProductsModel.addElement(product1);
 			listShopProductsModel.addElement(product2);
 		});
-		shopSwingView.productAddedToCart(product1);
+		GuiActionRunner.execute(() ->
+			shopSwingView.productAddedToCart(new Product("1", "test1")));
 		String[] productListContents = window.list("productList").contents();
 		assertThat(productListContents).containsExactly(product2.toString());
 		String[] cartListContents = window.list("productListInCart").contents();
