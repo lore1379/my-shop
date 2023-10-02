@@ -131,8 +131,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 
 	@Override
 	public void showAllProducts(List<Product> products) {
-		// TODO Auto-generated method stub
-		
+		products.stream().forEach(listShopProductsModel::addElement);
 	}
 
 	@Override
