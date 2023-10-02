@@ -13,6 +13,7 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 
 @RunWith(GUITestRunner.class)
@@ -68,6 +69,20 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 				shopSwingView.showAllProducts(asList(product1, product2)));
 		String[] productListContents = window.list("productList").contents();
 		assertThat(productListContents)
+			.containsExactly(product1.toString(), product2.toString());
+	}
+	
+	@Test
+	public void testShowCartShouldAddProductDescriptionsToTheCartList() {
+		Cart cart = new Cart("3");
+		Product product1 = new Product("1", "test1");
+		Product product2 = new Product("2", "test2");
+		cart.addToCart(product1);
+		cart.addToCart(product2);
+		GuiActionRunner.execute(() -> 
+				shopSwingView.showCart(cart));
+		String[] cartListContents = window.list("productListInCart").contents();
+		assertThat(cartListContents)
 			.containsExactly(product1.toString(), product2.toString());
 	}
 }
