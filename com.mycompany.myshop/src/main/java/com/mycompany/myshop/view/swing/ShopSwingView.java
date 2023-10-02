@@ -142,8 +142,8 @@ public class ShopSwingView extends JFrame implements ShopView {
 
 	@Override
 	public void productAddedToCart(Product product) {
-		// TODO Auto-generated method stub
-		
+		listShopProductsModel.removeElement(product);
+		listCartProductsModel.addElement(product);
 	}
 
 }
