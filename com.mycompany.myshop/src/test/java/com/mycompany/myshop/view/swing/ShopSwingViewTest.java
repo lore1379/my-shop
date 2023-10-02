@@ -3,6 +3,8 @@ package com.mycompany.myshop.view.swing;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import javax.swing.DefaultListModel;
+
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -84,5 +86,21 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		String[] cartListContents = window.list("productListInCart").contents();
 		assertThat(cartListContents)
 			.containsExactly(product1.toString(), product2.toString());
+	}
+	
+	@Test
+	public void testProductAddedToCartShouldMoveTheProductFromProductListToCartList() {
+		Product product1 = new Product("1", "test1");
+		Product product2 = new Product("2", "test2");
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Product> listShopProductsModel = shopSwingView.getListShopProductModel();
+			listShopProductsModel.addElement(product1);
+			listShopProductsModel.addElement(product2);
+		});
+		shopSwingView.productAddedToCart(product1);
+		String[] productListContents = window.list("productList").contents();
+		assertThat(productListContents).containsExactly(product2.toString());
+		String[] cartListContents = window.list("productListInCart").contents();
+		assertThat(cartListContents).containsExactly(product1.toString());
 	}
 }
