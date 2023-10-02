@@ -6,7 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
+import com.mycompany.myshop.view.ShopView;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -18,11 +20,12 @@ import javax.swing.JScrollPane;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
-public class ShopSwingView extends JFrame {
+public class ShopSwingView extends JFrame implements ShopView {
 
 	/**
 	 * 
@@ -124,6 +127,24 @@ public class ShopSwingView extends JFrame {
 
 	DefaultListModel<Product> getListShopProductModel() {
 		return listShopProductsModel;
+	}
+
+	@Override
+	public void showAllProducts(List<Product> products) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showCart(Cart cart) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void productAddedToCart(Product product) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
