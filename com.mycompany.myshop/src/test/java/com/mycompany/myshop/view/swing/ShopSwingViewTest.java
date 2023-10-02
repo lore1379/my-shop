@@ -35,4 +35,10 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 	public void testAddToCartInitialState() {
 		window.button(JButtonMatcher.withText("Add to Cart")).requireDisabled();
 	}
+	
+	@Test
+	public void testProductListInCartInitialStateAndLabel() {
+		window.label(JLabelMatcher.withText("Cart"));
+		window.list("productListInCart");
+	}
 }
