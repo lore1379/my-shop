@@ -23,6 +23,8 @@ import javax.swing.JButton;
 import java.util.List;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ShopSwingView extends JFrame implements ShopView {
 
@@ -35,7 +37,12 @@ public class ShopSwingView extends JFrame implements ShopView {
 	
 	private DefaultListModel<Product> listShopProductsModel;
 	private DefaultListModel<Product> listCartProductsModel;
+	
+	private ShopController shopController;
 
+	public void setShopController(ShopController shopController) {
+		this.shopController = shopController;
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -97,6 +104,11 @@ public class ShopSwingView extends JFrame implements ShopView {
 		listShopProducts.setName("productList");
 		
 		btnAddSelectedToCart = new JButton("Add to Cart");
+		btnAddSelectedToCart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				shopController.addProductToCart(listShopProducts.getSelectedValue());
+			}
+		});
 		btnAddSelectedToCart.setEnabled(false);
 		GridBagConstraints gbc_btnAddSelectedToCart = new GridBagConstraints();
 		gbc_btnAddSelectedToCart.insets = new Insets(0, 0, 5, 0);
@@ -147,9 +159,5 @@ public class ShopSwingView extends JFrame implements ShopView {
 		listCartProductsModel.addElement(product);
 	}
 
-	public void setShopController(ShopController shopController) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
