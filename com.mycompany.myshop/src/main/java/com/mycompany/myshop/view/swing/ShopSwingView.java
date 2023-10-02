@@ -19,6 +19,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
 public class ShopSwingView extends JFrame {
 
@@ -29,6 +31,7 @@ public class ShopSwingView extends JFrame {
 	private JPanel contentPane;
 	
 	private DefaultListModel<Product> listShopProductsModel;
+	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -78,17 +81,20 @@ public class ShopSwingView extends JFrame {
 		gbc_scrollPane.gridy = 1;
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
-		JList list = new JList();
-		scrollPane.setViewportView(list);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setName("productList");
-		
-		JButton btnNewButton = new JButton("Add to Cart");
-		btnNewButton.setEnabled(false);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		listShopProductsModel = new DefaultListModel<>();
+		JList<Product> listShopProducts = new JList<>(listShopProductsModel);
+		listShopProducts.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnNewButton.setEnabled(listShopProducts.getSelectedIndex() != -1);
 			}
 		});
+		scrollPane.setViewportView(listShopProducts);
+		listShopProducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listShopProducts.setName("productList");
+		
+		btnNewButton = new JButton("Add to Cart");
+		btnNewButton.setEnabled(false);
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.anchor = GridBagConstraints.EAST;
