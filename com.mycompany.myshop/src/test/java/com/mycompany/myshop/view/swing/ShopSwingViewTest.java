@@ -1,5 +1,6 @@
 package com.mycompany.myshop.view.swing;
 
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -28,5 +29,10 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 	public void testProductListInitialStateAndLabel() {
 		window.label(JLabelMatcher.withText("Shop"));
 		window.list("productList");
+	}
+	
+	@Test
+	public void testAddToCartInitialState() {
+		window.button(JButtonMatcher.withText("Add to Cart")).requireDisabled();
 	}
 }
