@@ -1,5 +1,6 @@
 package com.mycompany.myshop.view.swing;
 
+import org.assertj.swing.core.matcher.JLabelMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -11,6 +12,7 @@ import org.junit.runner.RunWith;
 public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 
 	private ShopSwingView shopSwingView;
+	private FrameFixture window;
 
 	@Override
 	protected void onSetUp() throws Exception {
@@ -18,11 +20,13 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 			shopSwingView = new ShopSwingView();
 			return shopSwingView;
 		});
-		FrameFixture window = new FrameFixture(robot(), shopSwingView);
+		window = new FrameFixture(robot(), shopSwingView);
 		window.show();
 	}
 
 	@Test
-	public void test() {
+	public void testProductListInitialStateAndLabel() {
+		window.label(JLabelMatcher.withText("Shop"));
+		window.list("productList");
 	}
 }
