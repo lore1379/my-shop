@@ -15,6 +15,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.repository.mongo.ShopMongoRepository;
 import com.mycompany.myshop.view.ShopView;
@@ -35,6 +36,7 @@ public class ShopControllerIT {
 	private AutoCloseable closeable;
 	
 	private MongoCollection<Document> productCollection;
+	private MongoCollection<Document> cartCollection;
 	
 	@Before
 	public void setup() {
@@ -51,6 +53,11 @@ public class ShopControllerIT {
 				new Document()
 					.append("id", "10")
 					.append("name", "testProduct"));
+		cartCollection = database.getCollection("cart");
+		cartCollection.insertOne(
+				new Document()
+					.append("id", "1")
+					.append("name", "testCart"));
 	}
 	
 	@After
@@ -64,6 +71,14 @@ public class ShopControllerIT {
 		shopController.allProducts();
 		verify(shopView)
 			.showAllProducts(asList(product));
+	}
+	
+	@Test
+	public void testGetCart() {
+		Cart cart = new Cart("1");
+		shopController.getCart("1");
+		verify(shopView)
+			.showCart(cart);
 	}
 
 }
