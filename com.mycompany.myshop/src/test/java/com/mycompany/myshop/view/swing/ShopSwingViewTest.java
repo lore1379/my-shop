@@ -2,6 +2,7 @@ package com.mycompany.myshop.view.swing;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 import javax.swing.DefaultListModel;
 
@@ -14,7 +15,10 @@ import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import com.mycompany.myshop.controller.ShopController;
 import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 
@@ -23,15 +27,27 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 
 	private ShopSwingView shopSwingView;
 	private FrameFixture window;
+	
+	@Mock
+	private ShopController shopController;
+	
+	private AutoCloseable closeable;
 
 	@Override
 	protected void onSetUp() throws Exception {
+		closeable = MockitoAnnotations.openMocks(this);
 		GuiActionRunner.execute(() -> {
 			shopSwingView = new ShopSwingView();
+			shopSwingView.setShopController(shopController);
 			return shopSwingView;
 		});
 		window = new FrameFixture(robot(), shopSwingView);
 		window.show();
+	}
+	
+	@Override
+	protected void onTearDown() throws Exception {
+		closeable.close();
 	}
 
 	@Test
@@ -103,5 +119,19 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		assertThat(productListContents).containsExactly(product2.toString());
 		String[] cartListContents = window.list("productListInCart").contents();
 		assertThat(cartListContents).containsExactly(product1.toString());
+	}
+	
+	@Test
+	public void testAddToCartButtonShouldDelegateToShopControllerAddProductToCart() {
+		Product product1 = new Product("1", "test1");
+		Product product2 = new Product("2", "test2");
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Product> listShopProductsModel = shopSwingView.getListShopProductModel();
+			listShopProductsModel.addElement(product1);
+			listShopProductsModel.addElement(product2);
+		});
+		window.list("productList").selectItem(1);
+		window.button(JButtonMatcher.withText("Add to Cart")).click();
+		verify(shopController).addProductToCart(product2);
 	}
 }

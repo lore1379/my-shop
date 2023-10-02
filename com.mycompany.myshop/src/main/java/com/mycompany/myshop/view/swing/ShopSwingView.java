@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.mycompany.myshop.controller.ShopController;
 import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.view.ShopView;
@@ -144,6 +145,11 @@ public class ShopSwingView extends JFrame implements ShopView {
 	public void productAddedToCart(Product product) {
 		listShopProductsModel.removeElement(product);
 		listCartProductsModel.addElement(product);
+	}
+
+	public void setShopController(ShopController shopController) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
