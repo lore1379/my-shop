@@ -80,5 +80,13 @@ public class ShopControllerIT {
 		verify(shopView)
 			.showCart(cart);
 	}
+	
+	@Test
+	public void testaddProductToCart() {
+		Product productToAdd = new Product("10", "testProduct");
+		shopController.addProductToCart(productToAdd);
+		verify(shopView)
+			.productAddedToCart(productToAdd);
+	}
 
 }
