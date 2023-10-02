@@ -19,9 +19,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
 import java.util.List;
-import java.awt.event.ActionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
@@ -32,9 +30,10 @@ public class ShopSwingView extends JFrame implements ShopView {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JButton btnAddSelectedToCart;
 	
 	private DefaultListModel<Product> listShopProductsModel;
-	private JButton btnAddSelectedToCart;
+	private DefaultListModel<Product> listCartProductsModel;
 
 	/**
 	 * Launch the application.
@@ -119,10 +118,11 @@ public class ShopSwingView extends JFrame implements ShopView {
 		gbc_scrollPane_1.gridy = 4;
 		contentPane.add(scrollPane_1, gbc_scrollPane_1);
 		
-		JList list_1 = new JList();
-		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list_1.setName("productListInCart");
-		scrollPane_1.setViewportView(list_1);
+		listCartProductsModel = new DefaultListModel<>();
+		JList<Product> listCartProducts = new JList<>(listCartProductsModel);
+		listCartProducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listCartProducts.setName("productListInCart");
+		scrollPane_1.setViewportView(listCartProducts);
 	}
 
 	DefaultListModel<Product> getListShopProductModel() {
@@ -136,8 +136,8 @@ public class ShopSwingView extends JFrame implements ShopView {
 
 	@Override
 	public void showCart(Cart cart) {
-		// TODO Auto-generated method stub
-		
+		List<Product> productsInCart = cart.getProductList();
+		productsInCart.stream().forEach(listCartProductsModel::addElement);
 	}
 
 	@Override
