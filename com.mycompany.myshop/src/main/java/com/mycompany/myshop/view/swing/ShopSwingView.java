@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.mycompany.myshop.model.Product;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
@@ -12,6 +15,7 @@ import javax.swing.JList;
 import java.awt.Insets;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -23,6 +27,8 @@ public class ShopSwingView extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	
+	private DefaultListModel<Product> listShopProductsModel;
 
 	/**
 	 * Launch the application.
@@ -108,6 +114,10 @@ public class ShopSwingView extends JFrame {
 		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list_1.setName("productListInCart");
 		scrollPane_1.setViewportView(list_1);
+	}
+
+	DefaultListModel<Product> getListShopProductModel() {
+		return listShopProductsModel;
 	}
 
 }
