@@ -106,6 +106,25 @@ public class ShopMongoRepositoryTest {
 		
 	}
 	
+	@Test
+	public void testFindCartFoundShouldReturnCartWithProductList() {
+		Cart cart = new Cart("1");
+		cart.addToCart(new Product("2", "test2"));
+		cart.addToCart(new Product("3", "test3"));
+		cartCollection.insertOne(
+				new Document()
+				.append("id", "1")
+				.append("productList", asList(
+						new Document()
+						.append("id", "2")
+						.append("name", "test2"),
+						new Document()
+						.append("id", "3")
+						.append("name", "test3"))));
+		assertThat(shopRepository.findCart("1"))
+			.isEqualTo(cart);
+	}
+	
 	private void addTestProductToDatabase(String id, String name) {
 		productCollection.insertOne(
 				new Document()
