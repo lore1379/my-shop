@@ -47,8 +47,16 @@ public class ShopMongoRepository implements ShopRepository {
 	@Override
 	public Cart findCart(String id) {
 		Document d = cartCollection.find(Filters.eq("id", id)).first();
-		if (d != null)
-			return new Cart("" + d.get("id"));
+		if (d != null) {
+			Cart cart = new Cart("" + d.get("id"));
+			List<Document> productList = (List<Document>) d.get("productList");
+			if (productList != null) {
+				for (Document productDocument : productList) {
+		            cart.addToCart(fromDocumentToProduct(productDocument));
+				}
+			}
+			return cart;
+		}		
 		return null;
 	}
 
