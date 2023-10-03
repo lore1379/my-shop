@@ -20,23 +20,27 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
 	private MongoClient mongoClient;
+
 	private ShopSwingView shopSwingView;
+	private ShopMongoRepository shopRepository;
+	private ShopController shopController;
+	private FrameFixture window;
 
 	@Override
 	protected void onSetUp() throws Exception {
 		mongoClient = new MongoClient(
 				new ServerAddress("localhost", mongoPort));
-		ShopMongoRepository shopRepository = new ShopMongoRepository(mongoClient,
+		shopRepository = new ShopMongoRepository(mongoClient,
 				"shop", "product", "cart");
 		MongoDatabase database = mongoClient.getDatabase("shop");
 		database.drop();
 		GuiActionRunner.execute(() -> {
 			shopSwingView = new ShopSwingView();
-			ShopController shopController = new ShopController(shopSwingView, shopRepository);
+			shopController = new ShopController(shopSwingView, shopRepository);
 			shopSwingView.setShopController(shopController);
 			return shopSwingView;
 		});
-		FrameFixture window = new FrameFixture(robot(), shopSwingView);
+		window = new FrameFixture(robot(), shopSwingView);
 		window.show();
 	}
 	
