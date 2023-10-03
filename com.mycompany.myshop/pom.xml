@@ -36,8 +36,19 @@
     
     <!-- Exclude model from sonarCloud code coverage -->
     <sonar.coverage.exclusions>
-			**/model/*.*,
-	</sonar.coverage.exclusions>
+      **/model/*.*,
+    </sonar.coverage.exclusions>
+	
+    <sonar.issue.ignore.multicriteria>e12</sonar.issue.ignore.multicriteria>
+	<!-- Disable rule for "Tests should include assertions": SonarQube is not 
+	aware of AssertJ Swing -->
+    <sonar.issue.ignore.multicriteria.e12.ruleKey>
+	  java:S2699
+    </sonar.issue.ignore.multicriteria.e12.ruleKey>
+    <sonar.issue.ignore.multicriteria.e12.resourceKey>
+      **/ShopSwingViewTest.java
+    </sonar.issue.ignore.multicriteria.e12.resourceKey>
+	
   </properties>
 
   <dependencies>
