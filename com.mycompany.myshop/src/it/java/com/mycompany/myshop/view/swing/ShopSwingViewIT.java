@@ -1,16 +1,23 @@
 package com.mycompany.myshop.view.swing;
 
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.bson.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mycompany.myshop.controller.ShopController;
+import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.repository.mongo.ShopMongoRepository;
 
 @RunWith(GUITestRunner.class)
@@ -26,6 +33,8 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 	private ShopController shopController;
 	private FrameFixture window;
 
+	private MongoCollection<Document> productCollection;
+
 	@Override
 	protected void onSetUp() throws Exception {
 		mongoClient = new MongoClient(
@@ -34,6 +43,7 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 				"shop", "product", "cart");
 		MongoDatabase database = mongoClient.getDatabase("shop");
 		database.drop();
+		productCollection = database.getCollection("product");
 		GuiActionRunner.execute(() -> {
 			shopSwingView = new ShopSwingView();
 			shopController = new ShopController(shopSwingView, shopRepository);
@@ -49,8 +59,19 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 		mongoClient.close();
 	}
 	
-	@Test
-	public void test() {
+	@Test @GUITest
+	public void testAllProducts() {
+		productCollection.insertMany(asList(
+				new Document()
+				.append("id", "1")
+				.append("name", "test1"),
+				new Document()
+				.append("id", "2")
+				.append("name", "test2")));
+		GuiActionRunner.execute( () ->
+			shopController.allProducts());
+		assertThat(window.list("productList").contents())
+			.containsExactly(new Product("1", "test1").toString(), new Product("2", "test2").toString());
 	}
 
 }
