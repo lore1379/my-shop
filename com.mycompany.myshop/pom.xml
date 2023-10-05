@@ -33,6 +33,7 @@
     <mongo.driver.version>3.12.7</mongo.driver.version>
     <logback.version>1.2.3</logback.version>
     <docker.version>0.34.1</docker.version>
+    <picocli.version>4.6.1</picocli.version>
     
     <!-- Exclude model from sonarCloud code coverage -->
     <sonar.coverage.exclusions>
@@ -70,6 +71,11 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>info.picocli</groupId>
+      <artifactId>picocli</artifactId>
+      <version>${picocli.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
