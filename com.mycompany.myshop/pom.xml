@@ -38,6 +38,7 @@
     <!-- Exclude model from sonarCloud code coverage -->
     <sonar.coverage.exclusions>
       **/model/*.*,
+      **/ShopSwingApp.*
     </sonar.coverage.exclusions>
 	
     <sonar.issue.ignore.multicriteria>e11,e12</sonar.issue.ignore.multicriteria>
@@ -133,6 +134,7 @@
           <configuration>
             <excludes>
               <exclude>**/model/*.*</exclude>
+              <exclude>**/ShopSwingApp.*</exclude>
             </excludes>
           </configuration>
           <executions>
