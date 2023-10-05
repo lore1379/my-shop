@@ -2,6 +2,8 @@ package com.mycompany.myshop.bdd.steps;
 
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JFrame;
 
 import org.assertj.swing.core.BasicRobot;
@@ -23,6 +25,8 @@ public class ShopSwingViewSteps {
 	private static final String DB_NAME = "test-db";
 	private static final String CART_COLLECTION_NAME = "test-cart-collection";
 	private static final String PRODUCT_COLLECTION_NAME = "test-product-collection";
+	
+	private static final String PRODUCT_FIXTURE_1_NAME = "test1";
 	
 	private static int mongoPort = 
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
@@ -66,8 +70,8 @@ public class ShopSwingViewSteps {
 
 	@Given("The user selects a product from the shop list")
 	public void the_user_selects_a_product_from_the_shop_list() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	    window.list("productList")
+	    	.selectItem(Pattern.compile(".*" + PRODUCT_FIXTURE_1_NAME + ".*"));
 	}
 
 	@When("The user clicks the {string} button")
