@@ -3,6 +3,9 @@ package com.mycompany.myshop.view.swing;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -16,7 +19,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import com.mycompany.myshop.controller.ShopController;
+import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.repository.mongo.ShopMongoRepository;
 
@@ -35,6 +41,8 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 
 	private MongoCollection<Document> productCollection;
 
+	private MongoCollection<Document> cartCollection;
+
 	@Override
 	protected void onSetUp() throws Exception {
 		mongoClient = new MongoClient(
@@ -44,6 +52,7 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 		MongoDatabase database = mongoClient.getDatabase("shop");
 		database.drop();
 		productCollection = database.getCollection("product");
+		cartCollection = database.getCollection("cart");
 		GuiActionRunner.execute(() -> {
 			shopSwingView = new ShopSwingView();
 			shopController = new ShopController(shopSwingView, shopRepository);
@@ -72,6 +81,22 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 			shopController.allProducts());
 		assertThat(window.list("productList").contents())
 			.containsExactly(new Product("1", "test1").toString(), new Product("2", "test2").toString());
+	}
+	
+	@Test @GUITest
+	public void testGetCart() {
+		Cart cart = new Cart("1");
+		cartCollection.insertOne(
+				new Document()
+				.append("id", "1")
+				.append("productList", 
+						asList(new Document()
+						.append("id", "2")
+						.append("name", "test2"))));
+		GuiActionRunner.execute( () ->
+			shopController.getCart(cart.getId()));
+		assertThat(window.list("productListInCart").contents())
+			.containsExactly(new Product("2", "test2").toString());
 	}
 
 }
