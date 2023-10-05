@@ -20,6 +20,15 @@ import com.mongodb.ServerAddress;
 @RunWith(GUITestRunner.class)
 public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 	
+	private static final String DB_NAME = "test-db";
+	private static final String CART_COLLECTION_NAME = "test-cart-collection";
+	private static final String PRODUCT_COLLECTION_NAME = "test-product-collection";
+
+	private static final String PRODUCT_FIXTURE_1_ID = "1";
+	private static final String PRODUCT_FIXTURE_1_NAME = "test1";
+	private static final String PRODUCT_FIXTURE_2_ID = "2";
+	private static final String PRODUCT_FIXTURE_2_NAME = "test2";
+
 	private static int mongoPort =
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
@@ -31,16 +40,16 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 	protected void onSetUp() throws Exception {
 		mongoClient = new MongoClient(
 				new ServerAddress("localhost", mongoPort));
-		mongoClient.getDatabase("shop").drop();
-		addTestProductToDatabase("1", "test1");
-		addTestProductToDatabase("2", "test2");
+		mongoClient.getDatabase(DB_NAME).drop();
+		addTestProductToDatabase(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME);
+		addTestProductToDatabase(PRODUCT_FIXTURE_2_ID, PRODUCT_FIXTURE_2_NAME);
 		application("com.mycompany.myshop.app.swing.ShopSwingApp")
 			.withArgs(
 				"--mongo-host=" + "localhost",
 				"--mongo-port=" + Integer.toString(mongoPort),
-				"--db-name=" + "shop",
-				"--product-collection=" + "product",
-				"--cart-collection=" + "cart"
+				"--db-name=" + DB_NAME,
+				"--product-collection=" + PRODUCT_COLLECTION_NAME,
+				"--cart-collection=" + CART_COLLECTION_NAME
 			)
 			.start();
 		window = WindowFinder.findFrame(new GenericTypeMatcher<JFrame>(JFrame.class) {
@@ -60,14 +69,16 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 	@Test @GUITest
 	public void testOnStartAllDatabaseElementsAreShown() {
 		assertThat(window.list("productList").contents())
-			.anySatisfy(e -> assertThat(e).contains("1", "test1"))
-			.anySatisfy(e -> assertThat(e).contains("2", "test2"));
+			.anySatisfy(e -> assertThat(e)
+					.contains(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME))
+			.anySatisfy(e -> assertThat(e)
+					.contains(PRODUCT_FIXTURE_2_ID, PRODUCT_FIXTURE_2_NAME));
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
 		mongoClient
-			.getDatabase("shop")
-			.getCollection("product")
+			.getDatabase(DB_NAME)
+			.getCollection(PRODUCT_COLLECTION_NAME)
 			.insertOne(
 					new Document()
 					.append("id", id)
