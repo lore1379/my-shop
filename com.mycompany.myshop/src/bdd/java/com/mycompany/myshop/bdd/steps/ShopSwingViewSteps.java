@@ -1,5 +1,12 @@
 package com.mycompany.myshop.bdd.steps;
 
+import static org.assertj.swing.launcher.ApplicationLauncher.application;
+
+import javax.swing.JFrame;
+
+import org.assertj.swing.core.BasicRobot;
+import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
 
 import com.mongodb.MongoClient;
@@ -14,6 +21,8 @@ import io.cucumber.java.en.When;
 public class ShopSwingViewSteps {
 	
 	private static final String DB_NAME = "test-db";
+	private static final String CART_COLLECTION_NAME = "test-cart-collection";
+	private static final String PRODUCT_COLLECTION_NAME = "test-product-collection";
 	
 	private static int mongoPort = 
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
@@ -38,8 +47,21 @@ public class ShopSwingViewSteps {
 	
 	@Given("The Shop View is shown")
 	public void the_Shop_View_is_shown() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	    application("com.mycompany.myshop.app.swing.ShopSwingApp")
+	    .withArgs(
+    		"--mongo-host=" + "localhost",
+			"--mongo-port=" + Integer.toString(mongoPort),
+			"--db-name=" + DB_NAME,
+			"--product-collection=" + PRODUCT_COLLECTION_NAME,
+			"--cart-collection=" + CART_COLLECTION_NAME
+		)
+		.start();
+	    window = WindowFinder.findFrame(new GenericTypeMatcher<JFrame>(JFrame.class) {
+			@Override
+			protected boolean isMatching(JFrame frame) {
+				return "MyShop".equals(frame.getTitle()) && frame.isShowing();
+			}
+		}).using(BasicRobot.robotWithCurrentAwtHierarchy());
 	}
 
 	@Given("The user selects a product from the shop list")
