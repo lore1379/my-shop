@@ -1,10 +1,40 @@
 package com.mycompany.myshop.bdd.steps;
 
+import org.assertj.swing.fixture.FrameFixture;
+
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class ShopSwingViewSteps {
+	
+	private static final String DB_NAME = "test-db";
+	
+	private static int mongoPort = 
+			Integer.parseInt(System.getProperty("mongo.port", "27017"));
+	
+	private MongoClient mongoClient;
+	
+	private FrameFixture window;
+	
+	@Before
+	public void setUp() {
+		mongoClient = new MongoClient(
+				new ServerAddress("localhost", mongoPort));
+		mongoClient.getDatabase(DB_NAME).drop();
+	}
+	
+	@After
+	public void tearDown() {
+		mongoClient.close();
+		if (window != null)
+			window.cleanUp();
+	}
 	
 	@Given("The Shop View is shown")
 	public void the_Shop_View_is_shown() {
