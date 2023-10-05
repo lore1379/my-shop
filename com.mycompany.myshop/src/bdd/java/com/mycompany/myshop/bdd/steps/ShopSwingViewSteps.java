@@ -1,5 +1,6 @@
 package com.mycompany.myshop.bdd.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 
 import java.util.regex.Pattern;
@@ -27,6 +28,7 @@ public class ShopSwingViewSteps {
 	private static final String CART_COLLECTION_NAME = "test-cart-collection";
 	private static final String PRODUCT_COLLECTION_NAME = "test-product-collection";
 	
+	private static final String PRODUCT_FIXTURE_1_ID = "1";
 	private static final String PRODUCT_FIXTURE_1_NAME = "test1";
 	
 	private static int mongoPort = 
@@ -82,8 +84,8 @@ public class ShopSwingViewSteps {
 
 	@Then("The cart list contains the product")
 	public void the_cart_list_contains_the_product() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	    assertThat(window.list("productListInCart").contents())
+	    	.anySatisfy(e -> assertThat(e).contains(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME));
 	}
 
 }
