@@ -3,10 +3,8 @@ package com.mycompany.myshop.view.swing;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.assertj.swing.annotation.GUITest;
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -19,8 +17,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
 import com.mycompany.myshop.controller.ShopController;
 import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
@@ -97,6 +93,25 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 			shopController.getCart(cart.getId()));
 		assertThat(window.list("productListInCart").contents())
 			.containsExactly(new Product("2", "test2").toString());
+	}
+	
+	@Test @GUITest
+	public void testAddToCartButtonSuccess() {
+		productCollection.insertMany(asList(
+				new Document()
+				.append("id", "1")
+				.append("name", "test1"),
+				new Document()
+				.append("id", "2")
+				.append("name", "test2")));
+		GuiActionRunner.execute( () ->
+			shopController.allProducts());
+		window.list("productList").selectItem(0);
+		window.button(JButtonMatcher.withText("Add to Cart")).click();
+		assertThat(window.list("productList").contents())
+			.containsExactly(new Product("2", "test2").toString());
+		assertThat(window.list("productListInCart").contents())
+			.containsExactly(new Product("1", "test1").toString());
 	}
 
 }
