@@ -49,6 +49,7 @@ public class ShopMongoRepository implements ShopRepository {
 		Document d = cartCollection.find(Filters.eq("id", id)).first();
 		if (d != null) {
 			Cart cart = new Cart("" + d.get("id"));
+			@SuppressWarnings("unchecked")
 			List<Document> productList = (List<Document>) d.get("productList");
 			if (productList != null) {
 				for (Document productDocument : productList) {
