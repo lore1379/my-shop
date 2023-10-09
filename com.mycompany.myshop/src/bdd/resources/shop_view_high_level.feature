@@ -9,3 +9,10 @@ Feature: Shop View High Level
     Given The user selects a product from the shop list
     When The user clicks the "Add to Cart" button
     Then The cart list contains the product
+    
+  Scenario: Add a not existing product to cart
+    Given The user selects a product from the shop list
+    But The product is in the meantime removed from the database
+    When The user clicks the "Add to Cart" button
+    Then An error is shown containing the name of the selected product
+    And The product is removed from the list
