@@ -65,6 +65,11 @@
     <sonar.issue.ignore.multicriteria.e13.resourceKey>
       **/ShopSwingAppE2E.java
     </sonar.issue.ignore.multicriteria.e13.resourceKey>
+    
+    <sonar.junit.reportPaths>
+      ${project.build.directory}/surefire-reports,
+      ${project.build.directory}/failsafe-reports
+    </sonar.junit.reportPaths>
 	
   </properties>
 
