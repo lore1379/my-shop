@@ -87,5 +87,11 @@ public class ShopSwingViewSteps {
 	    assertThat(window.list("productListInCart").contents())
 	    	.anySatisfy(e -> assertThat(e).contains(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME));
 	}
+	
+	@Then("An error is shown containing the name of the selected product")
+	public void an_error_is_shown_containing_the_name_of_the_selected_product() {
+	    assertThat(window.label("errorMessageLabel").text())
+	    	.contains(PRODUCT_FIXTURE_1_NAME);
+	}
 
 }
