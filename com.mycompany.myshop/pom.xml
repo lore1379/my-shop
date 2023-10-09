@@ -34,6 +34,7 @@
     <logback.version>1.2.3</logback.version>
     <docker.version>0.34.1</docker.version>
     <picocli.version>4.6.1</picocli.version>
+    <pitest.version>1.7.5</pitest.version>
     
     <!-- Exclude model from sonarCloud code coverage -->
     <sonar.coverage.exclusions>
@@ -173,6 +174,25 @@
               <version>${jaxb.api.version}</version>
             </dependency>
           </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.pitest</groupId>
+          <artifactId>pitest-maven</artifactId>
+          <version>${pitest.version}</version>
+          <configuration>
+            <targetClasses>
+              <param>com.mycompany.myshop.controller.ShopController</param>
+              <param>com.mycompany.myshop.repository.mongo.ShopMongoRepository</param>
+            </targetClasses>
+            <targetTests>
+              <param>com.mycompany.myshop.controller.ShopControllerTest</param>
+              <param>com.mycompany.myshop.repository.mongo.ShopMongoRepositoryTest</param>		
+            </targetTests>
+            <mutators>
+              <mutator>STRONGER</mutator>
+            </mutators>
+            <mutationThreshold>100</mutationThreshold>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -332,6 +352,26 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>mutation-testing</id>
+      <build>
+        <plugins>
+          <plugin>
+          <!-- configured in pluginManagement -->
+          <groupId>org.pitest</groupId>
+          <artifactId>pitest-maven</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>mutationCoverage</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
           </plugin>
         </plugins>
       </build>
