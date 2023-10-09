@@ -4,6 +4,7 @@ import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.model.Filters;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -40,6 +41,14 @@ public class DatabaseSteps {
 	public void the_database_contains_a_few_products() {
 	    addTestProductToDatabase(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME);
 	    addTestProductToDatabase(PRODUCT_FIXTURE_2_ID, PRODUCT_FIXTURE_2_NAME);
+	}
+	
+	@Given("The product is in the meantime removed from the database")
+	public void the_product_is_in_the_meantime_removed_from_the_database() {
+	    mongoClient
+	    	.getDatabase(DB_NAME)
+	    	.getCollection(PRODUCT_COLLECTION_NAME)
+	    	.deleteOne(Filters.eq("id", PRODUCT_FIXTURE_1_ID));
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
