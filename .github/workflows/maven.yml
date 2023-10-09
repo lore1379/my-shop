@@ -15,7 +15,9 @@ jobs:
           - java: 8
             additional-maven-args-java8: "-Pcoveralls -DrepoToken=$COVERALLS_REPO_TOKEN -DpullRequest=${{ github.event.pull_request.number }}"
           - java: 11
-            additional-maven-args-java11: "-Pjacoco sonar:sonar -Dsonar.projectKey=lore1379_my-shop"
+          - java: 17
+            additional-maven-args-java17: "-Pjacoco sonar:sonar -Dsonar.projectKey=lore1379_my-shop"
+          
 
     name: Build with Java ${{ matrix.java }} on Linux
     steps:
@@ -36,7 +38,7 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven
-      run: xvfb-run mvn verify ${{ matrix.additional-maven-args-java8 }} ${{ matrix.additional-maven-args-java11 }}
+      run: xvfb-run mvn verify ${{ matrix.additional-maven-args-java8 }} ${{ matrix.additional-maven-args-java17 }}
       working-directory: ${{ env.workdir }}
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
