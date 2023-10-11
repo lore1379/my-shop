@@ -94,10 +94,7 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 	public void testAddToCartButtonError() {
 		window.list("productList")
 			.selectItem(Pattern.compile(".*" + PRODUCT_FIXTURE_1_NAME + ".*"));
-		mongoClient
-			.getDatabase(DB_NAME)
-			.getCollection(PRODUCT_COLLECTION_NAME)
-			.deleteOne(Filters.eq("id", PRODUCT_FIXTURE_1_ID));
+		removeTestProductFromDatabase(PRODUCT_FIXTURE_1_ID);
 		window.button(JButtonMatcher.withText("Add to Cart")).click();
 		assertThat(window.label("errorMessageLabel").text())
 			.contains(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME);
@@ -111,5 +108,12 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 					new Document()
 					.append("id", id)
 					.append("name", name));
+	}
+	
+	private void removeTestProductFromDatabase(String id) {
+		mongoClient
+		.getDatabase(DB_NAME)
+		.getCollection(PRODUCT_COLLECTION_NAME)
+		.deleteOne(Filters.eq("id", id));
 	}
 }
