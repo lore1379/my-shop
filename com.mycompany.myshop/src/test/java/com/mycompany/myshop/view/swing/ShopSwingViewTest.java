@@ -140,4 +140,15 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		window.label("errorMessageLabel").requireText(" ");
 	}
 	
+	@Test
+	public void testShowErrorProductNotFoundShouldShowTheMessageInTheErrorLabel() {
+		Product product = new Product("1", "test");
+		GuiActionRunner.execute(() -> 
+			shopSwingView.showErrorProductNotFound("error message", product)
+		);
+		window.label("errorMessageLabel")
+			.requireText("error message: " + product);
+	}
+	
+	
 }
