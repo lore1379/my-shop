@@ -13,4 +13,6 @@ public interface ShopView {
 
 	void productAddedToCart(Product product);
 
+	void showErrorProductNotFound(String message, Product product);
+
 }

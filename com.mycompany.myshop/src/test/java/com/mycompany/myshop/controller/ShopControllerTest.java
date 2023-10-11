@@ -1,7 +1,9 @@
 package com.mycompany.myshop.controller;
 
 import static java.util.Arrays.asList;
+import static org.mockito.Mockito.ignoreStubs;
 import static org.mockito.Mockito.verify;
+ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -66,6 +68,17 @@ public class ShopControllerTest {
 			.thenReturn(productToAdd);
 		shopController.addProductToCart(productToAdd);
 		verify(shopView).productAddedToCart(productToAdd);
+	}
+	
+	@Test
+	public void testAddProductToCartWhenProductDoesNotExist() {
+		Product product = new Product("1", "test");
+		when(shopRepository.findProductById("1"))
+			.thenReturn(null);
+		shopController.addProductToCart(product);
+		verify(shopView)
+			.showErrorProductNotFound("No available product with id 1", product);
+		verifyNoMoreInteractions(ignoreStubs(shopRepository));
 	}
 
 }
