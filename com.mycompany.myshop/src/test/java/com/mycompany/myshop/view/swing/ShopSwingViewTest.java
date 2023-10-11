@@ -162,5 +162,21 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 			.requireText(" ");
 	}
 	
+	@Test
+	public void testShowErrorProductNotFoundShouldRemoveTheProductFromTheList() {
+		Product product1 = new Product("1", "test1");
+		Product product2 = new Product("2", "test2");
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Product> listShopProductsModel = shopSwingView.getListShopProductModel();
+			listShopProductsModel.addElement(product1);
+			listShopProductsModel.addElement(product2);
+		});
+		GuiActionRunner.execute(() -> 
+			shopSwingView.showErrorProductNotFound("error message", product1)
+		);
+		assertThat(window.list("productList").contents())
+			.containsExactly(product2.toString());
+	}
+	
 	
 }
