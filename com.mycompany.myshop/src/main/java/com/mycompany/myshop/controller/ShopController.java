@@ -26,10 +26,13 @@ public class ShopController {
 
 	public void addProductToCart(Product product) {
 		Product productToAdd = shopRepository.findProductById(product.getId());
-		if (productToAdd == null )
+		if (productToAdd == null ) {
 			shopView.showErrorProductNotFound("No available product with id " + product.getId(),
 					product);
-		shopView.productAddedToCart(productToAdd);
+		}
+		else {
+			shopView.productAddedToCart(productToAdd);
+		}
 	}
 
 }
