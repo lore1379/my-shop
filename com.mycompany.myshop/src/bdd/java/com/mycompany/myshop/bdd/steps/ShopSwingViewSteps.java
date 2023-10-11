@@ -93,5 +93,11 @@ public class ShopSwingViewSteps {
 	    assertThat(window.label("errorMessageLabel").text())
 	    	.contains(PRODUCT_FIXTURE_1_NAME);
 	}
+	
+	@Then("The product is removed from the list")
+	public void the_product_is_removed_from_the_list() {
+	    assertThat(window.list("productList").contents())
+	    	.noneMatch(e -> e.contains(PRODUCT_FIXTURE_1_NAME));
+	}
 
 }
