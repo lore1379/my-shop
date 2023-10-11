@@ -150,5 +150,17 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 			.requireText("error message: " + product);
 	}
 	
+	@Test
+	public void testProductAddedToCartShouldAlsoResetTheErrorLabel() {
+		Product nonExistingProduct = new Product("1", "nonExisting");
+		Product existingProduct = new Product("1", "existing");
+		GuiActionRunner.execute(() -> {
+			shopSwingView.showErrorProductNotFound("error message", nonExistingProduct);
+			shopSwingView.productAddedToCart(existingProduct);
+		});
+		window.label("errorMessageLabel")
+			.requireText(" ");
+	}
+	
 	
 }
