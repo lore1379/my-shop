@@ -124,6 +124,8 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 		window.button(JButtonMatcher.withText("Add to Cart")).click();
 		window.label("errorMessageLabel")
 			.requireText("No available product with id 1: " + product);
+		assertThat(window.list("productList").contents())
+			.isEmpty();
 	}
 
 }
