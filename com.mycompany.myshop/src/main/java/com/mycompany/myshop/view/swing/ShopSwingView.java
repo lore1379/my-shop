@@ -50,9 +50,9 @@ public class ShopSwingView extends JFrame implements ShopView {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblShop = new JLabel("Shop");
@@ -98,6 +98,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
+		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_1.gridx = 0;
 		gbc_scrollPane_1.gridy = 4;
@@ -108,6 +109,13 @@ public class ShopSwingView extends JFrame implements ShopView {
 		listCartProducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listCartProducts.setName("productListInCart");
 		scrollPane_1.setViewportView(listCartProducts);
+		
+		JLabel label = new JLabel(" ");
+		label.setName("errorMessageLabel");
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.gridx = 0;
+		gbc_label.gridy = 5;
+		contentPane.add(label, gbc_label);
 	}
 
 	DefaultListModel<Product> getListShopProductModel() {
