@@ -28,6 +28,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btnAddSelectedToCart;
+	private JLabel lblErrorMessage;
 	
 	private DefaultListModel<Product> listShopProductsModel;
 	private DefaultListModel<Product> listCartProductsModel;
@@ -110,12 +111,12 @@ public class ShopSwingView extends JFrame implements ShopView {
 		listCartProducts.setName("productListInCart");
 		scrollPane_1.setViewportView(listCartProducts);
 		
-		JLabel label = new JLabel(" ");
-		label.setName("errorMessageLabel");
+		lblErrorMessage = new JLabel(" ");
+		lblErrorMessage.setName("errorMessageLabel");
 		GridBagConstraints gbc_label = new GridBagConstraints();
 		gbc_label.gridx = 0;
 		gbc_label.gridy = 5;
-		contentPane.add(label, gbc_label);
+		contentPane.add(lblErrorMessage, gbc_label);
 	}
 
 	DefaultListModel<Product> getListShopProductModel() {
@@ -141,8 +142,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 
 	@Override
 	public void showErrorProductNotFound(String message, Product product) {
-		// TODO Auto-generated method stub
-		
+		lblErrorMessage.setText(message + ": " + product);
 	}
 
 
