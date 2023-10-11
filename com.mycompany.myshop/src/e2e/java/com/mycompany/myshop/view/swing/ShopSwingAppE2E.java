@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.model.Filters;
 
 @RunWith(GUITestRunner.class)
 public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
@@ -87,6 +88,19 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(window.list("productListInCart").contents())
 			.anySatisfy(e -> assertThat(e)
 					.contains(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME));
+	}
+	
+	@Test @GUITest
+	public void testAddToCartButtonError() {
+		window.list("productList")
+			.selectItem(Pattern.compile(".*" + PRODUCT_FIXTURE_1_NAME + ".*"));
+		mongoClient
+			.getDatabase(DB_NAME)
+			.getCollection(PRODUCT_COLLECTION_NAME)
+			.deleteOne(Filters.eq("id", PRODUCT_FIXTURE_1_ID));
+		window.button(JButtonMatcher.withText("Add to Cart")).click();
+		assertThat(window.label("errorMessageLabel").text())
+			.contains(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME);
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
