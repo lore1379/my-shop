@@ -134,4 +134,10 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		window.button(JButtonMatcher.withText("Add to Cart")).click();
 		verify(shopController).addProductToCart(product2);
 	}
+	
+	@Test
+	public void testErrorMessageLabelInitialState() {
+		window.label("errorMessageLabel").requireText(" ");
+	}
+	
 }
