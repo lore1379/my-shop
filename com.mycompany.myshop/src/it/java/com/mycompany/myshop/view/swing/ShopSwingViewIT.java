@@ -113,5 +113,17 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 		assertThat(window.list("productListInCart").contents())
 			.containsExactly(new Product("1", "test1").toString());
 	}
+	
+	@Test @GUITest
+	public void testAddToCartButtonError() {
+		Product product = new Product("1", "nonExistent");
+		GuiActionRunner.execute( () ->
+			shopSwingView.getListShopProductModel().addElement(product)
+		);
+		window.list("productList").selectItem(0);
+		window.button(JButtonMatcher.withText("Add to Cart")).click();
+		window.label("errorMessageLabel")
+			.requireText("No available product with id 1: " + product);
+	}
 
 }
