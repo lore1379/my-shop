@@ -29,6 +29,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 	private JPanel contentPane;
 	private JButton btnAddSelectedToCart;
 	private JLabel lblErrorMessage;
+	private JButton btnRemoveFromCart;
 	
 	private DefaultListModel<Product> listShopProductsModel;
 	private DefaultListModel<Product> listCartProductsModel;
@@ -107,11 +108,13 @@ public class ShopSwingView extends JFrame implements ShopView {
 		
 		listCartProductsModel = new DefaultListModel<>();
 		JList<Product> listCartProducts = new JList<>(listCartProductsModel);
+		listCartProducts.addListSelectionListener(
+				e -> btnRemoveFromCart.setEnabled(listCartProducts.getSelectedIndex() != -1));
 		listCartProducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listCartProducts.setName("productListInCart");
 		scrollPane_1.setViewportView(listCartProducts);
 		
-		JButton btnRemoveFromCart = new JButton("Remove from Cart");
+		btnRemoveFromCart = new JButton("Remove from Cart");
 		btnRemoveFromCart.setEnabled(false);
 		GridBagConstraints gbc_btnRemoveFromCart = new GridBagConstraints();
 		gbc_btnRemoveFromCart.insets = new Insets(0, 0, 5, 0);
@@ -132,8 +135,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 	}
 	
 	public DefaultListModel<Product> getListCartProductModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return listCartProductsModel;
 	}
 
 	@Override
