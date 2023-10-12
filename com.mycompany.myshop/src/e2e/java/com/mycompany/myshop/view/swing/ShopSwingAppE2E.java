@@ -30,10 +30,15 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 	private static final String CART_COLLECTION_NAME = "test-cart-collection";
 	private static final String PRODUCT_COLLECTION_NAME = "test-product-collection";
 
+	private static final String CART_FIXTURE_10_ID = "10";
 	private static final String PRODUCT_FIXTURE_1_ID = "1";
 	private static final String PRODUCT_FIXTURE_1_NAME = "test1";
 	private static final String PRODUCT_FIXTURE_2_ID = "2";
 	private static final String PRODUCT_FIXTURE_2_NAME = "test2";
+	private static final String PRODUCT_FIXTURE_3_ID = "3";
+	private static final String PRODUCT_FIXTURE_3_NAME = "test3";
+	private static final String PRODUCT_FIXTURE_4_ID = "4";
+	private static final String PRODUCT_FIXTURE_4_NAME = "test4";
 
 	private static int mongoPort =
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
@@ -49,7 +54,7 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 		mongoClient.getDatabase(DB_NAME).drop();
 		addTestProductToDatabase(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME);
 		addTestProductToDatabase(PRODUCT_FIXTURE_2_ID, PRODUCT_FIXTURE_2_NAME);
-		addTestCartWithProductsToDatabase("10", "3", "test3", "4", "test4");
+		addTestCartWithProductsToDatabase(CART_FIXTURE_10_ID, PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME, PRODUCT_FIXTURE_4_ID, PRODUCT_FIXTURE_4_NAME);
 		application("com.mycompany.myshop.app.swing.ShopSwingApp")
 			.withArgs(
 				"--mongo-host=" + "localhost",
@@ -66,9 +71,6 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 			}
 		}).using(robot());
 	}
-	
-
-
 
 	@Override
 	protected void onTearDown() {
@@ -84,9 +86,9 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 					.contains(PRODUCT_FIXTURE_2_ID, PRODUCT_FIXTURE_2_NAME));
 		assertThat(window.list("productListInCart").contents())
 			.anySatisfy(e -> assertThat(e)
-					.contains("3", "test3"))
+					.contains(PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME))
 			.anySatisfy(e -> assertThat(e)
-					.contains("4", "test4"));
+					.contains(PRODUCT_FIXTURE_4_ID, PRODUCT_FIXTURE_4_NAME));
 	}
 	
 	@Test @GUITest

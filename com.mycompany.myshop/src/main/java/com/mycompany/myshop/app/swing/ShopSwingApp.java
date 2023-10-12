@@ -18,6 +18,8 @@ import picocli.CommandLine.Option;
 @Command(mixinStandardHelpOptions = true)
 public class ShopSwingApp implements Callable<Void>{
 	
+	private static final String USER_CART_ID = "10";
+
 	@Option(names = { "--mongo-host" }, description = "MongoDB host address")
 	private String mongoHost = "localhost";
 
@@ -50,7 +52,7 @@ public class ShopSwingApp implements Callable<Void>{
 				shopView.setShopController(shopController);
 				shopView.setVisible(true);
 				shopController.allProducts();
-				shopController.getCart("10");
+				shopController.getCart(USER_CART_ID);
 			} catch (Exception e) {
 				Logger.getLogger(getClass().getName())
 					.log(Level.SEVERE, "Exception", e);
