@@ -16,3 +16,8 @@ Feature: Shop View High Level
     When The user clicks the "Add to Cart" button
     Then An error is shown containing the name of the selected product
     And The product is removed from the list
+    
+  Scenario: Remove a product from cart
+    Given The user selects a product from the cart list
+    When The user clicks the "Remove from Cart" button
+    Then The shop list contains the product
