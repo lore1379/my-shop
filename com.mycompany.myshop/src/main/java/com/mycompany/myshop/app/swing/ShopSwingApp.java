@@ -50,6 +50,7 @@ public class ShopSwingApp implements Callable<Void>{
 				shopView.setShopController(shopController);
 				shopView.setVisible(true);
 				shopController.allProducts();
+				shopController.getCart("10");
 			} catch (Exception e) {
 				Logger.getLogger(getClass().getName())
 					.log(Level.SEVERE, "Exception", e);
