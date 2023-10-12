@@ -30,6 +30,7 @@ public class ShopSwingViewSteps {
 	
 	private static final String PRODUCT_FIXTURE_1_ID = "1";
 	private static final String PRODUCT_FIXTURE_1_NAME = "test1";
+	private static final String PRODUCT_FIXTURE_3_ID = "3";
 	private static final String PRODUCT_FIXTURE_3_NAME = "test3";
 	
 	private static int mongoPort = 
@@ -105,6 +106,12 @@ public class ShopSwingViewSteps {
 	public void the_user_selects_a_product_from_the_cart_list() {
 		window.list("productListInCart")
     		.selectItem(Pattern.compile(".*" + PRODUCT_FIXTURE_3_NAME + ".*"));
+	}
+	
+	@Then("The shop list contains the product")
+	public void the_shop_list_contains_the_product() {
+		assertThat(window.list("productList").contents())
+    		.anySatisfy(e -> assertThat(e).contains(PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME));
 	}
 
 }
