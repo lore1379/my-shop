@@ -3,6 +3,7 @@ Feature: Shop View High Level
 
   Background: 
     Given The database contains a few products
+    And The database contains a cart with a few products in it
     And The Shop View is shown
 
   Scenario: Add a product to cart
