@@ -30,6 +30,7 @@ public class ShopSwingViewSteps {
 	
 	private static final String PRODUCT_FIXTURE_1_ID = "1";
 	private static final String PRODUCT_FIXTURE_1_NAME = "test1";
+	private static final String PRODUCT_FIXTURE_3_NAME = "test3";
 	
 	private static int mongoPort = 
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
@@ -98,6 +99,12 @@ public class ShopSwingViewSteps {
 	public void the_product_is_removed_from_the_list() {
 	    assertThat(window.list("productList").contents())
 	    	.noneMatch(e -> e.contains(PRODUCT_FIXTURE_1_NAME));
+	}
+	
+	@Given("The user selects a product from the cart list")
+	public void the_user_selects_a_product_from_the_cart_list() {
+		window.list("productListInCart")
+    		.selectItem(Pattern.compile(".*" + PRODUCT_FIXTURE_3_NAME + ".*"));
 	}
 
 }
