@@ -1,5 +1,7 @@
 package com.mycompany.myshop.bdd.steps;
 
+import static java.util.Arrays.asList;
+
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
@@ -49,6 +51,23 @@ public class DatabaseSteps {
 	    	.getDatabase(DB_NAME)
 	    	.getCollection(PRODUCT_COLLECTION_NAME)
 	    	.deleteOne(Filters.eq("id", PRODUCT_FIXTURE_1_ID));
+	}
+	
+	@Given("The database contains a cart with a few products in it")
+	public void the_database_contains_a_cart_with_a_few_products_in_it() {
+		mongoClient
+			.getDatabase(DB_NAME)
+			.getCollection("test-cart-collection")
+			.insertOne(
+				new Document()
+				.append("id", "10")
+				.append("productList", asList(
+						new Document()
+						.append("id", "3")
+						.append("name", "test3"),
+						new Document()
+						.append("id", "4")
+						.append("name", "test4"))));
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
