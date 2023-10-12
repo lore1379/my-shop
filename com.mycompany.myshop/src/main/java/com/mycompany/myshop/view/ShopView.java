@@ -15,4 +15,6 @@ public interface ShopView {
 
 	void showErrorProductNotFound(String message, Product product);
 
+	void productRemovedFromCart(Product product);
+
 }

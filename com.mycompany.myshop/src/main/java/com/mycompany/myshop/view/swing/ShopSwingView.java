@@ -155,5 +155,11 @@ public class ShopSwingView extends JFrame implements ShopView {
 		listShopProductsModel.removeElement(product);
 	}
 
+	@Override
+	public void productRemovedFromCart(Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

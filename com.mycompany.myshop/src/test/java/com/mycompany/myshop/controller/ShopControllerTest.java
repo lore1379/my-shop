@@ -80,5 +80,12 @@ public class ShopControllerTest {
 			.showErrorProductNotFound("No available product with id 1", product);
 		verifyNoMoreInteractions(ignoreStubs(shopRepository));
 	}
+	
+	@Test
+	public void testRemoveProductFromCart() {
+		Product productToRemove = new Product("1", "test");
+		shopController.removeProductFromCart(productToRemove);
+		verify(shopView).productRemovedFromCart(productToRemove);
+	}
 
 }

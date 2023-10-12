@@ -35,4 +35,9 @@ public class ShopController {
 		}
 	}
 
+	public void removeProductFromCart(Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
