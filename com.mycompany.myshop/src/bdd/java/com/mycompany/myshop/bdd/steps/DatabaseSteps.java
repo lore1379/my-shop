@@ -13,19 +13,25 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 
 public class DatabaseSteps {
-	
+
 	private static int mongoPort =
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
 	private MongoClient mongoClient;
 	
 	private static final String DB_NAME = "test-db";
+	private static final String CART_COLLECTION_NAME = "test-cart-collection";
 	private static final String PRODUCT_COLLECTION_NAME = "test-product-collection";
 	
+	private static final String CART_FIXTURE_10_ID = "10";
 	private static final String PRODUCT_FIXTURE_1_ID = "1";
 	private static final String PRODUCT_FIXTURE_1_NAME = "test1";
 	private static final String PRODUCT_FIXTURE_2_ID = "2";
 	private static final String PRODUCT_FIXTURE_2_NAME = "test2";
+	private static final String PRODUCT_FIXTURE_3_ID = "3";
+	private static final String PRODUCT_FIXTURE_3_NAME = "test3";
+	private static final String PRODUCT_FIXTURE_4_ID = "4";
+	private static final String PRODUCT_FIXTURE_4_NAME = "test4";
 	
 	@Before
 	public void setUp() {
@@ -57,17 +63,17 @@ public class DatabaseSteps {
 	public void the_database_contains_a_cart_with_a_few_products_in_it() {
 		mongoClient
 			.getDatabase(DB_NAME)
-			.getCollection("test-cart-collection")
+			.getCollection(CART_COLLECTION_NAME)
 			.insertOne(
 				new Document()
-				.append("id", "10")
+				.append("id", CART_FIXTURE_10_ID)
 				.append("productList", asList(
 						new Document()
-						.append("id", "3")
-						.append("name", "test3"),
+						.append("id", PRODUCT_FIXTURE_3_ID)
+						.append("name", PRODUCT_FIXTURE_3_NAME),
 						new Document()
-						.append("id", "4")
-						.append("name", "test4"))));
+						.append("id", PRODUCT_FIXTURE_4_ID)
+						.append("name", PRODUCT_FIXTURE_4_NAME))));
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
