@@ -213,5 +213,19 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		window.label("errorMessageLabel").requireText(" ");
 	}
 	
+	@Test
+	public void testRemoveFromCartButtonShouldDelegateToShopControllerRemoveProductFromCart() {
+		Product product1 = new Product("1", "test1");
+		Product product2 = new Product("2", "test2");
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Product> listCartProductsModel = shopSwingView.getListCartProductModel();
+			listCartProductsModel.addElement(product1);
+			listCartProductsModel.addElement(product2);
+		});
+		window.list("productListInCart").selectItem(1);
+		window.button(JButtonMatcher.withText("Remove from Cart")).click();
+		verify(shopController).removeProductFromCart(product2);
+	}
+	
 	
 }
