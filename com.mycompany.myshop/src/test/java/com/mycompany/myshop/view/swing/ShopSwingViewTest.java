@@ -178,5 +178,10 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 			.containsExactly(product2.toString());
 	}
 	
+	@Test
+	public void testRemoveFromCartButtonInitialState() {
+		window.button(JButtonMatcher.withText("Remove from Cart")).requireDisabled();
+	}
+	
 	
 }
