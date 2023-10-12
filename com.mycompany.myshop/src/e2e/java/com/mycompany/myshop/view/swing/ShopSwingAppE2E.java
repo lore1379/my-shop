@@ -1,5 +1,6 @@
 package com.mycompany.myshop.view.swing;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
 
@@ -48,6 +49,7 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 		mongoClient.getDatabase(DB_NAME).drop();
 		addTestProductToDatabase(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME);
 		addTestProductToDatabase(PRODUCT_FIXTURE_2_ID, PRODUCT_FIXTURE_2_NAME);
+		addTestCartWithProductsToDatabase("10", "3", "test3", "4", "test4");
 		application("com.mycompany.myshop.app.swing.ShopSwingApp")
 			.withArgs(
 				"--mongo-host=" + "localhost",
@@ -66,6 +68,8 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 	}
 	
 
+
+
 	@Override
 	protected void onTearDown() {
 		mongoClient.close();
@@ -78,6 +82,11 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 					.contains(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME))
 			.anySatisfy(e -> assertThat(e)
 					.contains(PRODUCT_FIXTURE_2_ID, PRODUCT_FIXTURE_2_NAME));
+		assertThat(window.list("productListInCart").contents())
+			.anySatisfy(e -> assertThat(e)
+					.contains("3", "test3"))
+			.anySatisfy(e -> assertThat(e)
+					.contains("4", "test4"));
 	}
 	
 	@Test @GUITest
@@ -110,10 +119,30 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 					.append("name", name));
 	}
 	
+	private void addTestCartWithProductsToDatabase(String cartId, String firstProductId, 
+			String firstProductName, String secondProductId, String secondProductName) {
+		mongoClient
+			.getDatabase(DB_NAME)
+			.getCollection(CART_COLLECTION_NAME)
+			.insertOne(
+					new Document()
+					.append("id", cartId)
+					.append("productList", asList(
+							new Document()
+							.append("id", firstProductId)
+							.append("name", firstProductName),
+							new Document()
+							.append("id", secondProductId)
+							.append("name", secondProductName))));
+		
+	}
+	
 	private void removeTestProductFromDatabase(String id) {
 		mongoClient
 		.getDatabase(DB_NAME)
 		.getCollection(PRODUCT_COLLECTION_NAME)
 		.deleteOne(Filters.eq("id", id));
 	}
+	
+	
 }
