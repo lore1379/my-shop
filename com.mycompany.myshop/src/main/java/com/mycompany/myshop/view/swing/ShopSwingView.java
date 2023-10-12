@@ -51,9 +51,9 @@ public class ShopSwingView extends JFrame implements ShopView {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblShop = new JLabel("Shop");
@@ -111,11 +111,19 @@ public class ShopSwingView extends JFrame implements ShopView {
 		listCartProducts.setName("productListInCart");
 		scrollPane_1.setViewportView(listCartProducts);
 		
+		JButton btnRemoveFromCart = new JButton("Remove from Cart");
+		btnRemoveFromCart.setEnabled(false);
+		GridBagConstraints gbc_btnRemoveFromCart = new GridBagConstraints();
+		gbc_btnRemoveFromCart.insets = new Insets(0, 0, 5, 0);
+		gbc_btnRemoveFromCart.gridx = 0;
+		gbc_btnRemoveFromCart.gridy = 5;
+		contentPane.add(btnRemoveFromCart, gbc_btnRemoveFromCart);
+		
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setName("errorMessageLabel");
 		GridBagConstraints gbc_label = new GridBagConstraints();
 		gbc_label.gridx = 0;
-		gbc_label.gridy = 5;
+		gbc_label.gridy = 6;
 		contentPane.add(lblErrorMessage, gbc_label);
 	}
 
