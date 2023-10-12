@@ -130,6 +130,11 @@ public class ShopSwingView extends JFrame implements ShopView {
 	DefaultListModel<Product> getListShopProductModel() {
 		return listShopProductsModel;
 	}
+	
+	public DefaultListModel<Product> getListCartProductModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public void showAllProducts(List<Product> products) {
@@ -160,6 +165,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 }
