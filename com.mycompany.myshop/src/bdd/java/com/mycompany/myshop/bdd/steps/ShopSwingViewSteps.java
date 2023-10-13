@@ -113,5 +113,11 @@ public class ShopSwingViewSteps {
 		assertThat(window.list("productList").contents())
     		.anySatisfy(e -> assertThat(e).contains(PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME));
 	}
+	
+	@Then("The product is removed from the cart list")
+	public void the_product_is_removed_from_the_cart_list() {
+		assertThat(window.list("productListInCart").contents())
+    		.noneMatch(e -> e.contains(PRODUCT_FIXTURE_3_NAME));
+	}
 
 }
