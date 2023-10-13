@@ -227,5 +227,10 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		verify(shopController).removeProductFromCart(product2);
 	}
 	
+	@Test
+	public void testCheckoutProductButtonInitialState() {
+		window.button(JButtonMatcher.withText("Checkout Product")).requireDisabled();
+	}
+	
 	
 }
