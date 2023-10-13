@@ -22,3 +22,9 @@ Feature: Shop View High Level
     Given The user selects a product from the cart list
     When The user clicks the "Remove from Cart" button
     Then The shop list contains the product
+    
+  Scenario: Checkout a product from cart
+    Given The user selects a product from the cart list
+    When The user clicks the "Checkout Product" button
+    Then The product is removed from the cart list
+    And A successful purchase message is shown containing the name of the selected product
