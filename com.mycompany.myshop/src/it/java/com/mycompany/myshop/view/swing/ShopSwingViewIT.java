@@ -127,5 +127,29 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 		assertThat(window.list("productList").contents())
 			.isEmpty();
 	}
+	
+	@Test @GUITest
+	public void testRemoveFromCartButton() {
+		Cart cart = new Cart("1");
+		cartCollection.insertOne(
+				new Document()
+				.append("id", "1")
+				.append("productList", asList(
+						new Document()
+						.append("id", "2")
+						.append("name", "test2"),
+						new Document()
+						.append("id", "3")
+						.append("name", "test3") )));
+		GuiActionRunner.execute( () ->
+			shopController.getCart(cart.getId())
+		);
+		window.list("productListInCart").selectItem(0);
+		window.button(JButtonMatcher.withText("Remove from Cart")).click();
+		assertThat(window.list("productList").contents())
+			.containsExactly(new Product("2", "test2").toString());
+		assertThat(window.list("productListInCart").contents())
+			.containsExactly(new Product("3", "test3").toString());
+	}
 
 }
