@@ -125,6 +125,13 @@ public class ShopMongoRepositoryTest {
 			.isEqualTo(cart);
 	}
 	
+	@Test
+	public void productFoundInCartFalse() {
+		assertThat(shopRepository.productFoundInCart("1", "2"))
+			.isFalse();
+	}
+	
+	
 	private void addTestProductToDatabase(String id, String name) {
 		productCollection.insertOne(
 				new Document()
