@@ -67,8 +67,7 @@ public class ShopMongoRepository implements ShopRepository {
 
 	@Override
 	public Boolean productFoundInCart(String cartId, String productId) {
-		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	@Override
