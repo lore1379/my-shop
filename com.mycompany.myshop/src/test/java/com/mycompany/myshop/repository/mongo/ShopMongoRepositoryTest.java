@@ -131,6 +131,22 @@ public class ShopMongoRepositoryTest {
 			.isFalse();
 	}
 	
+	@Test
+	public void productFoundInCartTrue() {
+		cartCollection.insertOne(
+				new Document()
+				.append("id", "1")
+				.append("productList", asList(
+						new Document()
+						.append("id", "2")
+						.append("name", "test2"),
+						new Document()
+						.append("id", "3")
+						.append("name", "test3"))));
+		assertThat(shopRepository.productFoundInCart("1", "2"))
+			.isTrue();
+	}
+	
 	
 	private void addTestProductToDatabase(String id, String name) {
 		productCollection.insertOne(
