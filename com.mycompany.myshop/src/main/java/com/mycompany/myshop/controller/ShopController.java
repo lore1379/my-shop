@@ -39,4 +39,12 @@ public class ShopController {
 		shopView.productRemovedFromCart(product);
 	}
 
+	public void checkoutProductFromCart(Cart cart, Product product) {
+		if (shopRepository.productFoundInCart(cart.getId(), product.getId())) {
+			shopRepository.delete(cart.getId(), product.getId());
+			shopView.productPurchased(product);
+		}
+			
+	}
+
 }
