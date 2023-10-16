@@ -17,4 +17,6 @@ public interface ShopView {
 
 	void productRemovedFromCart(Product product);
 
+	void productPurchased(Product product);
+
 }

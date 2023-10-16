@@ -3,14 +3,16 @@ package com.mycompany.myshop.controller;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.ignoreStubs;
 import static org.mockito.Mockito.verify;
- import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.inOrder;
 
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -86,6 +88,18 @@ public class ShopControllerTest {
 		Product productToRemove = new Product("1", "test");
 		shopController.removeProductFromCart(productToRemove);
 		verify(shopView).productRemovedFromCart(productToRemove);
+	}
+	
+	@Test
+	public void testCheckoutProductFromCartWhenProductExists() {
+		Cart cart = new Cart("1");
+		Product productToCheckout = new Product("2", "test");
+		when(shopRepository.productFoundInCart("1", "2"))
+			.thenReturn(true);
+		shopController.checkoutProductFromCart(cart, productToCheckout);
+		InOrder inOrder = inOrder(shopRepository, shopView);
+		inOrder.verify(shopRepository).delete("1", "2");
+		inOrder.verify(shopView).productPurchased(productToCheckout);
 	}
 
 }

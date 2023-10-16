@@ -187,6 +187,12 @@ public class ShopSwingView extends JFrame implements ShopView {
 		lblErrorMessage.setText(" ");
 	}
 
+	@Override
+	public void productPurchased(Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

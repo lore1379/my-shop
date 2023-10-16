@@ -13,4 +13,8 @@ public interface ShopRepository {
 
 	public Cart findCart(String string);
 
+	public Boolean productFoundInCart(String cartId, String productId);
+
+	public void delete(String cartId, String productId);
+
 }
