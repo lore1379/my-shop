@@ -67,7 +67,10 @@ public class ShopMongoRepository implements ShopRepository {
 
 	@Override
 	public Boolean productFoundInCart(String cartId, String productId) {
-		return false;
+		Document filter = new Document("id", cartId)
+                .append("productList", 
+                		new Document("$elemMatch", new Document("id", productId)));
+		return cartCollection.find(filter).first() != null;
 	}
 
 	@Override
