@@ -113,19 +113,11 @@ public class ShopMongoRepositoryTest {
 		Cart cart = new Cart("1");
 		cart.addToCart(new Product("2", "test2"));
 		cart.addToCart(new Product("3", "test3"));
-		cartCollection.insertOne(
-				new Document()
-				.append("id", "1")
-				.append("productList", asList(
-						new Document()
-						.append("id", "2")
-						.append("name", "test2"),
-						new Document()
-						.append("id", "3")
-						.append("name", "test3"))));
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		assertThat(shopRepository.findCart("1"))
 			.isEqualTo(cart);
 	}
+
 	
 	@Test
 	public void testProductFoundInCartFalse() {
@@ -135,16 +127,7 @@ public class ShopMongoRepositoryTest {
 	
 	@Test
 	public void testProductFoundInCartTrue() {
-		cartCollection.insertOne(
-				new Document()
-				.append("id", "1")
-				.append("productList", asList(
-						new Document()
-						.append("id", "2")
-						.append("name", "test2"),
-						new Document()
-						.append("id", "3")
-						.append("name", "test3"))));
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		assertThat(shopRepository.productFoundInCart("1", "2"))
 			.isTrue();
 	}
@@ -152,16 +135,7 @@ public class ShopMongoRepositoryTest {
 	@Test
 	public void testDelete() {
 		Cart cart = new Cart("1");
-		cartCollection.insertOne(
-				new Document()
-				.append("id", "1")
-				.append("productList", asList(
-						new Document()
-						.append("id", "2")
-						.append("name", "test2"),
-						new Document()
-						.append("id", "3")
-						.append("name", "test3"))));
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		shopRepository.delete("1", "2");
 		@SuppressWarnings("unchecked")
 		List<Document> productList = (List<Document>) cartCollection
@@ -183,5 +157,18 @@ public class ShopMongoRepositoryTest {
 				.append("name", name));
 	}
 	
+	private void addTestCartToDatabase(String cartId, String firstProductId, 
+			String firstProductName, String secondProductId, String secondProductName) {
+		cartCollection.insertOne(
+				new Document()
+				.append("id", cartId)
+				.append("productList", asList(
+						new Document()
+						.append("id", firstProductId)
+						.append("name", firstProductName),
+						new Document()
+						.append("id", secondProductId)
+						.append("name", secondProductName))));
+	}
 
 }
