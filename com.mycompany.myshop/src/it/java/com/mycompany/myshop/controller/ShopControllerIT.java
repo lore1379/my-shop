@@ -78,12 +78,22 @@ public class ShopControllerIT {
 	}
 	
 	@Test
-	public void testaddProductToCart() {
+	public void testAddProductToCart() {
 		addTestProductToDatabase("10", "testProduct");
 		Product productToAdd = new Product("10", "testProduct");
 		shopController.addProductToCart(productToAdd);
 		verify(shopView)
 			.productAddedToCart(productToAdd);
+	}
+	
+	@Test
+	public void testCheckoutProductFromCart() {
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
+		Cart cart = new Cart("1");
+		Product productToCheckout = new Product("2", "test2");
+		shopController.checkoutProductFromCart(cart, productToCheckout);
+		verify(shopView)
+			.productPurchased(productToCheckout);
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
@@ -93,4 +103,18 @@ public class ShopControllerIT {
 				.append("name", name));
 	}
 	
+	private void addTestCartToDatabase(String cartId, String firstProductId, 
+			String firstProductName, String secondProductId, String secondProductName) {
+		cartCollection.insertOne(
+				new Document()
+				.append("id", cartId)
+				.append("productList", asList(
+						new Document()
+						.append("id", firstProductId)
+						.append("name", firstProductName),
+						new Document()
+						.append("id", secondProductId)
+						.append("name", secondProductName))));
+	}
+
 }
