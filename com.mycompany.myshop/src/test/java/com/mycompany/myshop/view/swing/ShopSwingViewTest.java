@@ -244,4 +244,20 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		checkoutProductButton.requireDisabled();
 	}
 	
+	@Test
+	public void testCheckoutProductButtonShouldRemoveTheProductFromCartListAndResetTheErrorLabel() {
+		Product product1 = new Product("1", "test1");
+		Product product2 = new Product("2", "test2");
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Product> listCartProductsModel = shopSwingView.getListCartProductModel();
+			listCartProductsModel.addElement(product1);
+			listCartProductsModel.addElement(product2);
+		});
+		GuiActionRunner.execute(() ->
+			shopSwingView.productPurchased(new Product("1", "test1")));
+		assertThat(window.list("productListInCart").contents())
+			.containsExactly(product2.toString());
+		window.label("errorMessageLabel").requireText(" ");
+	}
+	
 }
