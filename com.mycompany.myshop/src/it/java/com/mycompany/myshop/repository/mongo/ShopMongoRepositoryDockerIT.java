@@ -73,11 +73,32 @@ public class ShopMongoRepositoryDockerIT {
 		
 	}
 	
+	@Test
+	public void testProductFoundInCart() {
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
+		assertThat(shopRepository.productFoundInCart("1", "2"))
+			.isTrue();
+	}
+	
 	private void addTestProductToDatabase(String id, String name) {
 		productCollection.insertOne(
 				new Document()
 				.append("id", id)
 				.append("name", name));
+	}
+	
+	private void addTestCartToDatabase(String cartId, String firstProductId, 
+			String firstProductName, String secondProductId, String secondProductName) {
+		cartCollection.insertOne(
+				new Document()
+				.append("id", cartId)
+				.append("productList", asList(
+						new Document()
+						.append("id", firstProductId)
+						.append("name", firstProductName),
+						new Document()
+						.append("id", secondProductId)
+						.append("name", secondProductName))));
 	}
 
 }
