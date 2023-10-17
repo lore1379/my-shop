@@ -71,8 +71,10 @@ public class ShopMongoRepository implements ShopRepository {
 
 	@Override
 	public void delete(String cartId, String productId) {
-		// TODO Auto-generated method stub
-		
+		Document filter = new Document("id", cartId);
+        Document update = new Document("$pull", 
+        		new Document("productList", new Document("id", productId)));
+        cartCollection.updateOne(filter, update);
 	}
 	
 	private Product fromDocumentToProduct(Document d) {
