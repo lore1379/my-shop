@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static java.util.Arrays.asList;
 
 import java.net.InetSocketAddress;
+import java.util.List;
 
 import org.bson.Document;
 import org.junit.After;
@@ -16,6 +17,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 
@@ -145,6 +147,32 @@ public class ShopMongoRepositoryTest {
 						.append("name", "test3"))));
 		assertThat(shopRepository.productFoundInCart("1", "2"))
 			.isTrue();
+	}
+	
+	@Test
+	public void testDelete() {
+		Cart cart = new Cart("1");
+		cartCollection.insertOne(
+				new Document()
+				.append("id", "1")
+				.append("productList", asList(
+						new Document()
+						.append("id", "2")
+						.append("name", "test2"),
+						new Document()
+						.append("id", "3")
+						.append("name", "test3"))));
+		shopRepository.delete("1", "2");
+		@SuppressWarnings("unchecked")
+		List<Document> productList = (List<Document>) cartCollection
+				.find(Filters.eq("id", cart.getId()))
+				.first()
+				.get("productList");
+		assertThat(productList)
+			.containsExactly(
+					new Document()
+					.append("id", "3")
+					.append("name", "test3"));
 	}
 	
 	
