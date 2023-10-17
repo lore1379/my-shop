@@ -91,7 +91,7 @@ public class ShopControllerIT {
 		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		Cart cart = new Cart("1");
 		Product productToCheckout = new Product("2", "test2");
-		shopController.checkoutProductFromCart(cart, productToCheckout);
+		shopController.checkoutProductFromCart(cart.getId(), productToCheckout);
 		verify(shopView)
 			.productPurchased(productToCheckout);
 	}

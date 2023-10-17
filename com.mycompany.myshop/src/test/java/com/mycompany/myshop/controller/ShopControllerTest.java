@@ -96,7 +96,7 @@ public class ShopControllerTest {
 		Product productToCheckout = new Product("2", "test");
 		when(shopRepository.productFoundInCart("1", "2"))
 			.thenReturn(true);
-		shopController.checkoutProductFromCart(cart, productToCheckout);
+		shopController.checkoutProductFromCart(cart.getId(), productToCheckout);
 		InOrder inOrder = inOrder(shopRepository, shopView);
 		inOrder.verify(shopRepository).delete("1", "2");
 		inOrder.verify(shopView).productPurchased(productToCheckout);

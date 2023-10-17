@@ -37,9 +37,9 @@ public class ShopController {
 		shopView.productRemovedFromCart(product);
 	}
 
-	public void checkoutProductFromCart(Cart cart, Product product) {
-		if (Boolean.TRUE.equals(shopRepository.productFoundInCart(cart.getId(), product.getId()))) {
-			shopRepository.delete(cart.getId(), product.getId());
+	public void checkoutProductFromCart(String cartId, Product product) {
+		if (Boolean.TRUE.equals(shopRepository.productFoundInCart(cartId, product.getId()))) {
+			shopRepository.delete(cartId, product.getId());
 			shopView.productPurchased(product);
 		}
 			
