@@ -232,5 +232,16 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		window.button(JButtonMatcher.withText("Checkout Product")).requireDisabled();
 	}
 	
+	@Test
+	public void testCheckoutProductButtonShouldBeEnabledOnlyWhenAProductInCartIsSelected() {
+		GuiActionRunner.execute(() ->
+			shopSwingView.getListCartProductModel().addElement(new Product("1", "test")));
+		window.list("productListInCart").selectItem(0);
+		JButtonFixture checkoutProductButton =
+			window.button(JButtonMatcher.withText("Checkout Product"));
+		checkoutProductButton.requireEnabled();
+		window.list("productListInCart").clearSelection();
+		checkoutProductButton.requireDisabled();
+	}
 	
 }
