@@ -193,8 +193,8 @@ public class ShopSwingView extends JFrame implements ShopView {
 
 	@Override
 	public void productPurchased(Product product) {
-		// TODO Auto-generated method stub
-		
+		listCartProductsModel.removeElement(product);
+		lblErrorMessage.setText(" ");
 	}
 
 
