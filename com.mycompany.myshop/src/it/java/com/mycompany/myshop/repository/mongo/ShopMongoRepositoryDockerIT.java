@@ -3,6 +3,8 @@ package com.mycompany.myshop.repository.mongo;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -12,6 +14,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 
@@ -78,6 +81,22 @@ public class ShopMongoRepositoryDockerIT {
 		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		assertThat(shopRepository.productFoundInCart("1", "2"))
 			.isTrue();
+	}
+	
+	@Test
+	public void testDelete() {
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
+		shopRepository.delete("1", "2");
+		@SuppressWarnings("unchecked")
+		List<Document> productList = (List<Document>) cartCollection
+				.find(Filters.eq("id", "1"))
+				.first()
+				.get("productList");
+		assertThat(productList)
+			.containsExactly(
+					new Document()
+					.append("id", "3")
+					.append("name", "test3"));
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
