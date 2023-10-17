@@ -49,15 +49,7 @@ public class ShopControllerIT {
 		database.drop();
 		shopController = new ShopController(shopView, shopRepository);
 		productCollection = database.getCollection("product");
-		productCollection.insertOne(
-				new Document()
-					.append("id", "10")
-					.append("name", "testProduct"));
 		cartCollection = database.getCollection("cart");
-		cartCollection.insertOne(
-				new Document()
-					.append("id", "1")
-					.append("name", "testCart"));
 	}
 	
 	@After
@@ -67,6 +59,7 @@ public class ShopControllerIT {
 	
 	@Test
 	public void testAllProducts() {
+		addTestProductToDatabase("10", "testProduct");
 		Product product = new Product("10", "testProduct");
 		shopController.allProducts();
 		verify(shopView)
@@ -75,6 +68,9 @@ public class ShopControllerIT {
 	
 	@Test
 	public void testGetCart() {
+		cartCollection.insertOne(
+				new Document()
+				.append("id", "1"));
 		Cart cart = new Cart("1");
 		shopController.getCart("1");
 		verify(shopView)
@@ -83,10 +79,18 @@ public class ShopControllerIT {
 	
 	@Test
 	public void testaddProductToCart() {
+		addTestProductToDatabase("10", "testProduct");
 		Product productToAdd = new Product("10", "testProduct");
 		shopController.addProductToCart(productToAdd);
 		verify(shopView)
 			.productAddedToCart(productToAdd);
 	}
-
+	
+	private void addTestProductToDatabase(String id, String name) {
+		productCollection.insertOne(
+				new Document()
+				.append("id", id)
+				.append("name", name));
+	}
+	
 }
