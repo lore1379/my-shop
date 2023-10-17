@@ -61,10 +61,6 @@ public class ShopMongoRepository implements ShopRepository {
 		return null;
 	}
 
-	private Product fromDocumentToProduct(Document d) {
-		return new Product("" + d.get("id"), "" + d.get("name"));
-	}
-
 	@Override
 	public Boolean productFoundInCart(String cartId, String productId) {
 		Document filter = new Document("id", cartId)
@@ -77,5 +73,9 @@ public class ShopMongoRepository implements ShopRepository {
 	public void delete(String cartId, String productId) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private Product fromDocumentToProduct(Document d) {
+		return new Product("" + d.get("id"), "" + d.get("name"));
 	}
 }

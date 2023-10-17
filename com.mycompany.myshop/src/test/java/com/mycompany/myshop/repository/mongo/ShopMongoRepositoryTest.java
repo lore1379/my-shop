@@ -126,13 +126,13 @@ public class ShopMongoRepositoryTest {
 	}
 	
 	@Test
-	public void productFoundInCartFalse() {
+	public void testProductFoundInCartFalse() {
 		assertThat(shopRepository.productFoundInCart("1", "2"))
 			.isFalse();
 	}
 	
 	@Test
-	public void productFoundInCartTrue() {
+	public void testProductFoundInCartTrue() {
 		cartCollection.insertOne(
 				new Document()
 				.append("id", "1")
