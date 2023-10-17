@@ -26,13 +26,11 @@ public class ShopController {
 
 	public void addProductToCart(Product product) {
 		Product productToAdd = shopRepository.findProductById(product.getId());
-		if (productToAdd == null ) {
+		if (productToAdd == null )
 			shopView.showErrorProductNotFound("No available product with id " + product.getId(),
 					product);
-		}
-		else {
+		else
 			shopView.productAddedToCart(productToAdd);
-		}
 	}
 
 	public void removeProductFromCart(Product product) {
@@ -40,7 +38,7 @@ public class ShopController {
 	}
 
 	public void checkoutProductFromCart(Cart cart, Product product) {
-		if (shopRepository.productFoundInCart(cart.getId(), product.getId())) {
+		if (Boolean.TRUE.equals(shopRepository.productFoundInCart(cart.getId(), product.getId()))) {
 			shopRepository.delete(cart.getId(), product.getId());
 			shopView.productPurchased(product);
 		}
