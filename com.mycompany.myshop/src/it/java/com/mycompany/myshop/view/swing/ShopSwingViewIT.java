@@ -25,6 +25,8 @@ import com.mycompany.myshop.repository.mongo.ShopMongoRepository;
 @RunWith(GUITestRunner.class)
 public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 	
+	private static final String USER_CART_ID = "10";
+	
 	private static int mongoPort =
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
@@ -140,7 +142,7 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 						.append("name", "test2"),
 						new Document()
 						.append("id", "3")
-						.append("name", "test3") )));
+						.append("name", "test3"))));
 		GuiActionRunner.execute( () ->
 			shopController.getCart(cart.getId())
 		);
@@ -150,6 +152,24 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 			.containsExactly(new Product("2", "test2").toString());
 		assertThat(window.list("productListInCart").contents())
 			.containsExactly(new Product("3", "test3").toString());
+	}
+	
+	@Test @GUITest
+	public void testCheckoutProductButtonSuccess() {
+		Cart cart = new Cart(USER_CART_ID);
+		cartCollection.insertOne(
+				new Document()
+				.append("id", USER_CART_ID)
+				.append("productList", 
+						asList(new Document()
+						.append("id", "2")
+						.append("name", "test2"))));
+		GuiActionRunner.execute( () ->
+			shopController.getCart(cart.getId()));
+		window.list("productListInCart").selectItem(0);
+		window.button(JButtonMatcher.withText("Checkout Product")).click();
+		assertThat(window.list("productListInCart").contents())
+			.isEmpty();
 	}
 
 }
