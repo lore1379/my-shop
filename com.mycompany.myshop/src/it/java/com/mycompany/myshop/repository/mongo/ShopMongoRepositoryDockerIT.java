@@ -66,13 +66,15 @@ public class ShopMongoRepositoryDockerIT {
 	
 	@Test
 	public void testFindCart() {
-		cartCollection.insertMany(asList(
+		addTestCartToDatabase("10", "1", "test1", "2", "test2");
+		cartCollection.insertOne(
 				new Document()
-					.append("id", "1"),
-				new Document()
-					.append("id", "2")));
-		assertThat(shopRepository.findCart("2"))
-			.isEqualTo(new Cart("2"));
+					.append("id", "20"));
+		Cart cart = new Cart("10");
+		cart.addToCart(new Product("1", "test1"));
+		cart.addToCart(new Product("2", "test2"));
+		assertThat(shopRepository.findCart("10"))
+			.isEqualTo(cart);
 		
 	}
 	
