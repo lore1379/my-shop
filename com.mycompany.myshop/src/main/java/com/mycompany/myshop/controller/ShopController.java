@@ -35,7 +35,7 @@ public class ShopController {
 		}
 	}
 
-	public void removeProductFromCart(Product product) {
+	public void removeProductFromCart(String cartId, Product product) {
 		shopView.productRemovedFromCart(product);
 	}
 

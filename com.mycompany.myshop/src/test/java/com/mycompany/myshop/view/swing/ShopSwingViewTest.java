@@ -226,7 +226,7 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase {
 		});
 		window.list("productListInCart").selectItem(1);
 		window.button(JButtonMatcher.withText("Remove from Cart")).click();
-		verify(shopController).removeProductFromCart(product2);
+		verify(shopController).removeProductFromCart(USER_CART_ID, product2);
 	}
 	
 	@Test

@@ -90,8 +90,10 @@ public class ShopControllerTest {
 	@Test
 	public void testRemoveProductFromCart() {
 		Product productToRemove = new Product("1", "test");
-		shopController.removeProductFromCart(productToRemove);
-		verify(shopView).productRemovedFromCart(productToRemove);
+		shopController.removeProductFromCart(USER_CART_ID, productToRemove);
+		InOrder inOrder = inOrder(shopRepository, shopView);
+		inOrder.verify(shopRepository).moveProductToShop(USER_CART_ID, "1");
+		inOrder.verify(shopView).productRemovedFromCart(productToRemove);
 	}
 	
 	@Test

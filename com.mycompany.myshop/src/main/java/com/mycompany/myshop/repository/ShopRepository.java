@@ -19,4 +19,6 @@ public interface ShopRepository {
 
 	public void moveProductToCart(String cartId, String productId);
 
+	public void moveProductToShop(String cartId, String productId);
+
 }

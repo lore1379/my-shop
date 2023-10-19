@@ -76,6 +76,12 @@ public class ShopMongoRepository implements ShopRepository {
 	}
 
 	@Override
+	public void moveProductToShop(String cartId, String productId) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public Boolean productFoundInCart(String cartId, String productId) {
 		Document filter = new Document("id", cartId)
                 .append("productList", 
