@@ -30,6 +30,7 @@ public class ShopController {
 			shopView.showErrorProductNotFound("No available product with id " + product.getId(),
 					product);
 		else {
+			shopRepository.moveProductToCart(cartId, product.getId());
 			shopView.productAddedToCart(productToAdd);
 		}
 	}
