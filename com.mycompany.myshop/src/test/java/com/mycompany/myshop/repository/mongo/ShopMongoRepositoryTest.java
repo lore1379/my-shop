@@ -117,7 +117,29 @@ public class ShopMongoRepositoryTest {
 		assertThat(shopRepository.findCart("1"))
 			.isEqualTo(cart);
 	}
-
+	
+	@Test
+	public void testMoveProductToCartShouldMoveProductToCartCollection() {
+		Cart cart = new Cart("10");
+		addTestProductToDatabase("1", "test1");
+		addTestProductToDatabase("2", "test2");
+		cartCollection.insertOne(
+				new Document()
+					.append("id", "10"));
+		shopRepository.moveProductToCart("10", "2");
+		assertThat(shopRepository.findAllProducts())
+			.containsExactly(new Product("1", "test1"));
+		@SuppressWarnings("unchecked")
+		List<Document> productList = (List<Document>) cartCollection
+				.find(Filters.eq("id", cart.getId()))
+				.first()
+				.get("productList");
+		assertThat(productList)
+			.containsExactly(
+					new Document()
+					.append("id", "2")
+					.append("name", "test2"));
+	}
 	
 	@Test
 	public void testProductFoundInCartFalse() {
