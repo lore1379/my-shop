@@ -63,8 +63,16 @@ public class ShopMongoRepository implements ShopRepository {
 	
 	@Override
 	public void moveProductToCart(String cartId, String productId) {
-		// TODO Auto-generated method stub
-		
+		Product productToAdd = fromDocumentToProduct(
+				productCollection.find(Filters.eq("id", productId)).first());
+		productCollection.deleteOne(Filters.eq("id", productId));
+		Document filter = new Document("id", cartId);
+		Document update = new Document("$push", 
+        		new Document("productList", 
+        				new Document()
+        				.append("id", productToAdd.getId())
+        				.append("name", productToAdd.getName())));
+        cartCollection.updateOne(filter, update);
 	}
 
 	@Override
