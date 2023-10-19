@@ -60,6 +60,12 @@ public class ShopMongoRepository implements ShopRepository {
 		}		
 		return null;
 	}
+	
+	@Override
+	public void moveProductToCart(String cartId, String productId) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public Boolean productFoundInCart(String cartId, String productId) {
@@ -80,4 +86,5 @@ public class ShopMongoRepository implements ShopRepository {
 	private Product fromDocumentToProduct(Document d) {
 		return new Product("" + d.get("id"), "" + d.get("name"));
 	}
+
 }

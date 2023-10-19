@@ -85,7 +85,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 		
 		btnAddSelectedToCart = new JButton("Add to Cart");
 		btnAddSelectedToCart.addActionListener(
-				e -> shopController.addProductToCart(listShopProducts.getSelectedValue()));
+				e -> shopController.addProductToCart(USER_CART_ID, listShopProducts.getSelectedValue()));
 		btnAddSelectedToCart.setEnabled(false);
 		GridBagConstraints gbc_btnAddSelectedToCart = new GridBagConstraints();
 		gbc_btnAddSelectedToCart.gridwidth = 2;

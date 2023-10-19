@@ -24,6 +24,8 @@ import com.mycompany.myshop.view.ShopView;
 
 public class ShopControllerTest {
 	
+	private static final String USER_CART_ID = "10";
+	
 	@Mock
 	private ShopView shopView;
 	
@@ -68,8 +70,10 @@ public class ShopControllerTest {
 		Product productToAdd = new Product("1", "test");
 		when(shopRepository.findProductById("1"))
 			.thenReturn(productToAdd);
-		shopController.addProductToCart(productToAdd);
-		verify(shopView).productAddedToCart(productToAdd);
+		shopController.addProductToCart(USER_CART_ID, productToAdd);
+		InOrder inOrder = inOrder(shopRepository, shopView);
+		inOrder.verify(shopRepository).moveProductToCart(USER_CART_ID, "1");
+		inOrder.verify(shopView).productAddedToCart(productToAdd);
 	}
 	
 	@Test
@@ -77,7 +81,7 @@ public class ShopControllerTest {
 		Product product = new Product("1", "test");
 		when(shopRepository.findProductById("1"))
 			.thenReturn(null);
-		shopController.addProductToCart(product);
+		shopController.addProductToCart(USER_CART_ID, product);
 		verify(shopView)
 			.showErrorProductNotFound("No available product with id 1", product);
 		verifyNoMoreInteractions(ignoreStubs(shopRepository));

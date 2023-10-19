@@ -17,4 +17,6 @@ public interface ShopRepository {
 
 	public void delete(String cartId, String productId);
 
+	public void moveProductToCart(String cartId, String productId);
+
 }
