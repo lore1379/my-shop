@@ -87,11 +87,7 @@ public class ShopMongoRepositoryDockerIT {
 		shopRepository.moveProductToCart("10", "2");
 		assertThat(shopRepository.findAllProducts())
 			.containsExactly(new Product("1", "test1"));
-		@SuppressWarnings("unchecked")
-		List<Document> productList = (List<Document>) cartCollection
-				.find(Filters.eq("id", cart.getId()))
-				.first()
-				.get("productList");
+		List<Document> productList = getCartProductList(cart);
 		assertThat(productList)
 			.containsExactly(
 					new Document()
@@ -108,13 +104,10 @@ public class ShopMongoRepositoryDockerIT {
 	
 	@Test
 	public void testDelete() {
+		Cart cart = new Cart("1");
 		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		shopRepository.delete("1", "2");
-		@SuppressWarnings("unchecked")
-		List<Document> productList = (List<Document>) cartCollection
-				.find(Filters.eq("id", "1"))
-				.first()
-				.get("productList");
+		List<Document> productList = getCartProductList(cart);
 		assertThat(productList)
 			.containsExactly(
 					new Document()
@@ -141,6 +134,14 @@ public class ShopMongoRepositoryDockerIT {
 						new Document()
 						.append("id", secondProductId)
 						.append("name", secondProductName))));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Document> getCartProductList(Cart cart) {
+		return (List<Document>) cartCollection
+				.find(Filters.eq("id", cart.getId()))
+				.first()
+				.get("productList");
 	}
 
 }
