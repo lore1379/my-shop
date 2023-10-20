@@ -4,6 +4,8 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 import org.junit.After;
@@ -95,6 +97,24 @@ public class ShopMongoRepositoryDockerIT {
 					new Document()
 					.append("id", "2")
 					.append("name", "test2"));
+	}
+	
+	@Test
+	public void testMoveProductToShop() {
+		Cart cart = new Cart("1");
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
+		shopRepository.moveProductToShop("1", "2");
+		assertThat(StreamSupport
+				.stream(productCollection.find().spliterator(), false)
+				.map(d -> new Product("" + d.get("id"), "" + d.get("name")))
+				.collect(Collectors.toList()))
+			.containsExactly(new Product("2", "test2"));
+		List<Document> productList = getCartProductList(cart);
+		assertThat(productList)
+			.containsExactly(
+					new Document()
+					.append("id", "3")
+					.append("name", "test3"));
 	}
 	
 	@Test
