@@ -155,12 +155,11 @@ public class ShopMongoRepositoryDockerIT {
 						.append("name", secondProductName))));
 	}
 	
-	@SuppressWarnings("unchecked")
 	private List<Document> getCartProductList(Cart cart) {
-		return (List<Document>) cartCollection
+		return cartCollection
 				.find(Filters.eq("id", cart.getId()))
 				.first()
-				.get("productList");
+				.getList("productList", Document.class);
 	}
 
 	private List<Product> readAllProductsFromDatabase() {
