@@ -89,12 +89,14 @@ public class ShopMongoRepository implements ShopRepository {
                 .filter(d -> d.get("id").equals(productId))
                 .map(this::fromDocumentToProduct)
                 .findFirst();
-		cartCollection.updateOne(cartFilter, updateFilter);
-		Product productToMove = productOptional.get();
-		productCollection.insertOne(
-				new Document()
-				.append("id", productToMove.getId())
-				.append("name", productToMove.getName()));
+		if (productOptional.isPresent()) {
+			cartCollection.updateOne(cartFilter, updateFilter);
+			Product productToMove = productOptional.get();
+			productCollection.insertOne(
+					new Document()
+					.append("id", productToMove.getId())
+					.append("name", productToMove.getName()));
+		}
 	}
 	
 	@Override
