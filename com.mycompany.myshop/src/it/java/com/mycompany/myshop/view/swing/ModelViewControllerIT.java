@@ -24,6 +24,8 @@ import com.mycompany.myshop.repository.mongo.ShopMongoRepository;
 @RunWith(GUITestRunner.class)
 public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 	
+	private static final String USER_CART_ID = "10";
+
 	private static int mongoPort =
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
@@ -64,7 +66,7 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testAddToCart() {
-		Cart cart = new Cart("10");
+		Cart cart = new Cart(USER_CART_ID);
 		cart.addToCart(new Product("1", "test1"));
 		productCollection.insertMany(asList(
 				new Document()
@@ -75,23 +77,23 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 				.append("name", "test2")));
 		cartCollection.insertOne(
 				new Document()
-				.append("id", "10"));
+				.append("id", USER_CART_ID));
 		GuiActionRunner.execute( () ->
 			shopController.allProducts());
 		window.list("productList").selectItem(0);
 		window.button(JButtonMatcher.withText("Add to Cart")).click();
-		assertThat(shopRepository.findCart("10"))
+		assertThat(shopRepository.findCart(USER_CART_ID))
 			.isEqualTo(cart);
 	}
 	
 	@Test
 	public void testRemoveFromCart() {
-		addTestCartToDatabase("10", "2", "test2", "3", "test3");
+		addTestCartToDatabase(USER_CART_ID, "2", "test2", "3", "test3");
 		GuiActionRunner.execute( () ->
-			shopController.getCart("10"));
+			shopController.getCart(USER_CART_ID));
 		window.list("productListInCart").selectItem(0);
 		window.button(JButtonMatcher.withText("Remove from Cart")).click();
-		assertThat(shopRepository.productFoundInCart("10", "2"))
+		assertThat(shopRepository.productFoundInCart(USER_CART_ID, "2"))
 			.isFalse();
 		
 	}
