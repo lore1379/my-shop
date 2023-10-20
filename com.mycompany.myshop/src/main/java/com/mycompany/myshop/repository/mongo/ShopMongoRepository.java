@@ -52,8 +52,7 @@ public class ShopMongoRepository implements ShopRepository {
 		Document d = cartCollection.find(Filters.eq("id", id)).first();
 		if (d != null) {
 			Cart cart = new Cart("" + d.get("id"));
-			@SuppressWarnings("unchecked")
-			List<Document> productList = (List<Document>) d.get("productList");
+			List<Document> productList = d.getList("productList", Document.class);
 			if (productList != null) {
 				for (Document productDocument : productList) {
 		            cart.addToCart(fromDocumentToProduct(productDocument));
@@ -82,8 +81,9 @@ public class ShopMongoRepository implements ShopRepository {
 	public void moveProductToShop(String cartId, String productId) {
 		Bson cartFilter = Filters.eq("id", cartId);
 		Bson updateFilter = Updates.pull("productList", Filters.eq("id", productId));
-		Document cartDocument = cartCollection.find(cartFilter).first();
-		List<Document> productList = cartDocument.getList("productList", Document.class);
+		List<Document> productList = cartCollection.find(cartFilter)
+				.first()
+				.getList("productList", Document.class);
 		// search the matching document and convert to product
 		Optional<Product> productOptional = productList.stream()
                 .filter(d -> d.get("id").equals(productId))
