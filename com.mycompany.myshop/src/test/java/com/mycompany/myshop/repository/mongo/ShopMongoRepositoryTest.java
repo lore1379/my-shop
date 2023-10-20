@@ -129,7 +129,7 @@ public class ShopMongoRepositoryTest {
 				new Document()
 					.append("id", "10"));
 		shopRepository.moveProductToCart("10", "2");
-		assertThat(shopRepository.findAllProducts())
+		assertThat(readAllProductsFromDatabase())
 			.containsExactly(new Product("1", "test1"));
 		List<Document> productList = getCartProductList(cart);
 		assertThat(productList)
