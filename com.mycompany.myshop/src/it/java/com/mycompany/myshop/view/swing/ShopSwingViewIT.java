@@ -132,10 +132,10 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 	
 	@Test @GUITest
 	public void testRemoveFromCartButton() {
-		Cart cart = new Cart("1");
+		Cart cart = new Cart(USER_CART_ID);
 		cartCollection.insertOne(
 				new Document()
-				.append("id", "1")
+				.append("id", USER_CART_ID)
 				.append("productList", asList(
 						new Document()
 						.append("id", "2")
