@@ -36,6 +36,7 @@ public class ShopController {
 	}
 
 	public void removeProductFromCart(String cartId, Product product) {
+		shopRepository.moveProductToShop(cartId, product.getId());
 		shopView.productRemovedFromCart(product);
 	}
 
