@@ -104,10 +104,7 @@ public class ShopMongoRepositoryDockerIT {
 		Cart cart = new Cart("1");
 		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		shopRepository.moveProductToShop("1", "2");
-		assertThat(StreamSupport
-				.stream(productCollection.find().spliterator(), false)
-				.map(d -> new Product("" + d.get("id"), "" + d.get("name")))
-				.collect(Collectors.toList()))
+		assertThat(readAllProductsFromDatabase())
 			.containsExactly(new Product("2", "test2"));
 		List<Document> productList = getCartProductList(cart);
 		assertThat(productList)
@@ -164,6 +161,13 @@ public class ShopMongoRepositoryDockerIT {
 				.find(Filters.eq("id", cart.getId()))
 				.first()
 				.get("productList");
+	}
+
+	private List<Product> readAllProductsFromDatabase() {
+		return StreamSupport
+				.stream(productCollection.find().spliterator(), false)
+				.map(d -> new Product("" + d.get("id"), "" + d.get("name")))
+				.collect(Collectors.toList());
 	}
 
 }
