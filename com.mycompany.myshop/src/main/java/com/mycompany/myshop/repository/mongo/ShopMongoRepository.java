@@ -1,14 +1,17 @@
 package com.mycompany.myshop.repository.mongo;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 import com.mycompany.myshop.repository.ShopRepository;
@@ -77,8 +80,21 @@ public class ShopMongoRepository implements ShopRepository {
 
 	@Override
 	public void moveProductToShop(String cartId, String productId) {
-		// TODO Auto-generated method stub
-		
+		Bson cartFilter = Filters.eq("id", cartId);
+		Bson updateFilter = Updates.pull("productList", Filters.eq("id", productId));
+		Document cartDocument = cartCollection.find(cartFilter).first();
+		List<Document> productList = cartDocument.getList("productList", Document.class);
+		// search the matching document and convert to product
+		Optional<Product> productOptional = productList.stream()
+                .filter(d -> d.get("id").equals(productId))
+                .map(this::fromDocumentToProduct)
+                .findFirst();
+		cartCollection.updateOne(cartFilter, updateFilter);
+		Product productToMove = productOptional.get();
+		productCollection.insertOne(
+				new Document()
+				.append("id", productToMove.getId())
+				.append("name", productToMove.getName()));
 	}
 	
 	@Override
