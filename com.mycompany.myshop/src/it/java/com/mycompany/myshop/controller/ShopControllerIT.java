@@ -89,6 +89,15 @@ public class ShopControllerIT {
 	}
 	
 	@Test
+	public void testRemoveProductFromCart() {
+		addTestCartToDatabase(USER_CART_ID, "2", "test2", "3", "test3");
+		Product productToRemove = new Product("2", "test2");
+		shopController.removeProductFromCart(USER_CART_ID, productToRemove);
+		verify(shopView)
+			.productRemovedFromCart(productToRemove);
+	}
+	
+	@Test
 	public void testCheckoutProductFromCart() {
 		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		Cart cart = new Cart("1");
