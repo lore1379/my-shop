@@ -83,4 +83,30 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		assertThat(shopRepository.findCart("10"))
 			.isEqualTo(cart);
 	}
+	
+	@Test
+	public void testRemoveFromCart() {
+		addTestCartToDatabase("10", "2", "test2", "3", "test3");
+		GuiActionRunner.execute( () ->
+			shopController.getCart("10"));
+		window.list("productListInCart").selectItem(0);
+		window.button(JButtonMatcher.withText("Remove from Cart")).click();
+		assertThat(shopRepository.productFoundInCart("10", "2"))
+			.isFalse();
+		
+	}
+	
+	private void addTestCartToDatabase(String cartId, String firstProductId, 
+			String firstProductName, String secondProductId, String secondProductName) {
+		cartCollection.insertOne(
+				new Document()
+				.append("id", cartId)
+				.append("productList", asList(
+						new Document()
+						.append("id", firstProductId)
+						.append("name", firstProductName),
+						new Document()
+						.append("id", secondProductId)
+						.append("name", secondProductName))));
+	}
 }
