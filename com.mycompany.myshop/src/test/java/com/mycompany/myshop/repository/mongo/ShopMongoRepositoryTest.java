@@ -143,14 +143,14 @@ public class ShopMongoRepositoryTest {
 	public void testMoveProductToShopShouldMoveProductToProductCollection() {
 		Cart cart = new Cart("1");
 		addTestCartToDatabase("1", "2", "test2", "3", "test3");
-		shopRepository.moveProductToShop("1", "2");
+		shopRepository.moveProductToShop("1", "3");
 		assertThat(readAllProductsFromDatabase())
-			.containsExactly(new Product("2", "test2"));
+			.containsExactly(new Product("3", "test3"));
 		assertThat(getCartProductList(cart))
 			.containsExactly(
 					new Document()
-					.append("id", "3")
-					.append("name", "test3"));
+					.append("id", "2")
+					.append("name", "test2"));
 			
 	}
 
