@@ -277,4 +277,9 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase {
 		verify(shopController).checkoutProductFromCart(cart.getId(), product2);
 	}
 	
+	@Test
+	public void testPurchaseSuccessMessageLabelInitialState() {
+		window.label("purchaseSuccessMessageLabel").requireText(" ");
+	}
+	
 }
