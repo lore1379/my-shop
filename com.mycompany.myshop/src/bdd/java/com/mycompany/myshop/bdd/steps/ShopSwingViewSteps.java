@@ -119,5 +119,11 @@ public class ShopSwingViewSteps {
 		assertThat(window.list("productListInCart").contents())
     		.noneMatch(e -> e.contains(PRODUCT_FIXTURE_3_NAME));
 	}
+	
+	@Then("A successful purchase message is shown containing the name of the selected product")
+	public void a_successful_purchase_message_is_shown_containing_the_name_of_the_selected_product() {
+	    assertThat(window.label("purchaseSuccessMessageLabel").text())
+	    	.contains(PRODUCT_FIXTURE_3_NAME);
+	}
 
 }
