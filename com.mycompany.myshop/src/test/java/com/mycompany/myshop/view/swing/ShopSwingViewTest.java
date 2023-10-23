@@ -23,7 +23,9 @@ import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 
 @RunWith(GUITestRunner.class)
-public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
+public class ShopSwingViewTest extends AssertJSwingJUnitTestCase {
+	
+	private static final String USER_CART_ID = "10";
 
 	private ShopSwingView shopSwingView;
 	private FrameFixture window;
@@ -132,7 +134,7 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		});
 		window.list("productList").selectItem(1);
 		window.button(JButtonMatcher.withText("Add to Cart")).click();
-		verify(shopController).addProductToCart(product2);
+		verify(shopController).addProductToCart(USER_CART_ID, product2);
 	}
 	
 	@Test
@@ -224,7 +226,7 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase{
 		});
 		window.list("productListInCart").selectItem(1);
 		window.button(JButtonMatcher.withText("Remove from Cart")).click();
-		verify(shopController).removeProductFromCart(product2);
+		verify(shopController).removeProductFromCart(USER_CART_ID, product2);
 	}
 	
 	@Test

@@ -85,7 +85,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 		
 		btnAddSelectedToCart = new JButton("Add to Cart");
 		btnAddSelectedToCart.addActionListener(
-				e -> shopController.addProductToCart(listShopProducts.getSelectedValue()));
+				e -> shopController.addProductToCart(USER_CART_ID, listShopProducts.getSelectedValue()));
 		btnAddSelectedToCart.setEnabled(false);
 		GridBagConstraints gbc_btnAddSelectedToCart = new GridBagConstraints();
 		gbc_btnAddSelectedToCart.gridwidth = 2;
@@ -125,7 +125,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 		
 		btnRemoveFromCart = new JButton("Remove from Cart");
 		btnRemoveFromCart.addActionListener(
-				e -> shopController.removeProductFromCart(listCartProducts.getSelectedValue()));
+				e -> shopController.removeProductFromCart(USER_CART_ID, listCartProducts.getSelectedValue()));
 		btnRemoveFromCart.setEnabled(false);
 		GridBagConstraints gbc_btnRemoveFromCart = new GridBagConstraints();
 		gbc_btnRemoveFromCart.anchor = GridBagConstraints.EAST;

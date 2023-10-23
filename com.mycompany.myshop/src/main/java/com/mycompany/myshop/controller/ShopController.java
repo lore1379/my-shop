@@ -24,16 +24,19 @@ public class ShopController {
 		shopView.showCart(cart);
 	}
 
-	public void addProductToCart(Product product) {
+	public void addProductToCart(String cartId, Product product) {
 		Product productToAdd = shopRepository.findProductById(product.getId());
 		if (productToAdd == null )
 			shopView.showErrorProductNotFound("No available product with id " + product.getId(),
 					product);
-		else
+		else {
+			shopRepository.moveProductToCart(cartId, product.getId());
 			shopView.productAddedToCart(productToAdd);
+		}
 	}
 
-	public void removeProductFromCart(Product product) {
+	public void removeProductFromCart(String cartId, Product product) {
+		shopRepository.moveProductToShop(cartId, product.getId());
 		shopView.productRemovedFromCart(product);
 	}
 

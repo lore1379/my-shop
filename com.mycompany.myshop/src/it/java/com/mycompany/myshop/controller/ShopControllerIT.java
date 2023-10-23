@@ -22,6 +22,8 @@ import com.mycompany.myshop.view.ShopView;
 
 public class ShopControllerIT {
 	
+	private static final String USER_CART_ID = "10";
+	
 	private static int mongoPort =
 			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
@@ -79,11 +81,20 @@ public class ShopControllerIT {
 	
 	@Test
 	public void testAddProductToCart() {
-		addTestProductToDatabase("10", "testProduct");
-		Product productToAdd = new Product("10", "testProduct");
-		shopController.addProductToCart(productToAdd);
+		addTestProductToDatabase("1", "testProduct");
+		Product productToAdd = new Product("1", "testProduct");
+		shopController.addProductToCart(USER_CART_ID, productToAdd);
 		verify(shopView)
 			.productAddedToCart(productToAdd);
+	}
+	
+	@Test
+	public void testRemoveProductFromCart() {
+		addTestCartToDatabase(USER_CART_ID, "2", "test2", "3", "test3");
+		Product productToRemove = new Product("2", "test2");
+		shopController.removeProductFromCart(USER_CART_ID, productToRemove);
+		verify(shopView)
+			.productRemovedFromCart(productToRemove);
 	}
 	
 	@Test

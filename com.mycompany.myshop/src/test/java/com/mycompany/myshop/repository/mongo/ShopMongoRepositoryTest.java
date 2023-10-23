@@ -5,6 +5,8 @@ import static java.util.Arrays.asList;
 
 import java.net.InetSocketAddress;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 import org.junit.After;
@@ -117,6 +119,58 @@ public class ShopMongoRepositoryTest {
 		assertThat(shopRepository.findCart("1"))
 			.isEqualTo(cart);
 	}
+	
+	@Test
+	public void testMoveProductToCartShouldMoveProductToCartCollection() {
+		Cart cart = new Cart("10");
+		addTestProductToDatabase("1", "test1");
+		addTestProductToDatabase("2", "test2");
+		cartCollection.insertOne(
+				new Document()
+					.append("id", "10"));
+		shopRepository.moveProductToCart("10", "2");
+		assertThat(readAllProductsFromDatabase())
+			.containsExactly(new Product("1", "test1"));
+		List<Document> productList = getCartProductList(cart);
+		assertThat(productList)
+			.containsExactly(
+					new Document()
+					.append("id", "2")
+					.append("name", "test2"));
+	}
+	
+	@Test
+	public void testMoveProductToShopShouldMoveProductToProductCollection() {
+		Cart cart = new Cart("1");
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
+		shopRepository.moveProductToShop("1", "3");
+		assertThat(readAllProductsFromDatabase())
+			.containsExactly(new Product("3", "test3"));
+		assertThat(getCartProductList(cart))
+			.containsExactly(
+					new Document()
+					.append("id", "2")
+					.append("name", "test2"));
+			
+	}
+	
+	@Test
+	public void testMoveProductToShopWhenProductIsNotFoundInCart() {
+		Cart cart = new Cart("1");
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
+		shopRepository.moveProductToShop("1", "4");
+		assertThat(readAllProductsFromDatabase())
+			.isEmpty();
+		assertThat(getCartProductList(cart))
+			.containsExactly(
+					new Document()
+					.append("id", "2")
+					.append("name", "test2"),
+					new Document()
+					.append("id", "3")
+					.append("name", "test3"));
+			
+	}
 
 	
 	@Test
@@ -137,11 +191,7 @@ public class ShopMongoRepositoryTest {
 		Cart cart = new Cart("1");
 		addTestCartToDatabase("1", "2", "test2", "3", "test3");
 		shopRepository.delete("1", "2");
-		@SuppressWarnings("unchecked")
-		List<Document> productList = (List<Document>) cartCollection
-				.find(Filters.eq("id", cart.getId()))
-				.first()
-				.get("productList");
+		List<Document> productList = getCartProductList(cart);
 		assertThat(productList)
 			.containsExactly(
 					new Document()
@@ -170,5 +220,18 @@ public class ShopMongoRepositoryTest {
 						.append("id", secondProductId)
 						.append("name", secondProductName))));
 	}
+	
+	private List<Document> getCartProductList(Cart cart) {
+		return cartCollection
+				.find(Filters.eq("id", cart.getId()))
+				.first()
+				.getList("productList", Document.class);
+	}
 
+	private List<Product> readAllProductsFromDatabase() {
+		return StreamSupport
+				.stream(productCollection.find().spliterator(), false)
+				.map(d -> new Product("" + d.get("id"), "" + d.get("name")))
+				.collect(Collectors.toList());
+	}
 }
