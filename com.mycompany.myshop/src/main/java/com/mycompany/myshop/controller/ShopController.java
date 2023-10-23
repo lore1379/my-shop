@@ -44,6 +44,8 @@ public class ShopController {
 		if (Boolean.TRUE.equals(shopRepository.productFoundInCart(cartId, product.getId()))) {
 			shopRepository.delete(cartId, product.getId());
 			shopView.productPurchased(product);
+			shopView.showPurchaseSuccessMessage("Successfully purchased product with id " + product.getId(),
+					product);
 		}
 			
 	}
