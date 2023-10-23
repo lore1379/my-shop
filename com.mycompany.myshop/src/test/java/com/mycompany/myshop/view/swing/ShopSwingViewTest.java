@@ -282,4 +282,14 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("purchaseSuccessMessageLabel").requireText(" ");
 	}
 	
+	@Test
+	public void testShowPurchaseSuccessMessageShouldShowTheMessageInThePurchaseSuccessLabel() {
+		Product product = new Product("1", "test");
+		GuiActionRunner.execute(() -> 
+			shopSwingView.showPurchaseSuccessMessage("success message", product)
+		);
+		window.label("purchaseSuccessMessageLabel")
+			.requireText("success message: " + product);
+	}
+	
 }
