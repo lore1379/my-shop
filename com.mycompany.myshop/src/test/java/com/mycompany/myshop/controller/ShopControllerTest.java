@@ -106,6 +106,8 @@ public class ShopControllerTest {
 		InOrder inOrder = inOrder(shopRepository, shopView);
 		inOrder.verify(shopRepository).delete("1", "2");
 		inOrder.verify(shopView).productPurchased(productToCheckout);
+		inOrder.verify(shopView)
+			.showPurchaseSuccessMessage("Successfully purchased product with id 2", productToCheckout);
 	}
 
 }

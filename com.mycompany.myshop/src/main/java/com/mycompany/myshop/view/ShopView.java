@@ -19,4 +19,6 @@ public interface ShopView {
 
 	void productPurchased(Product product);
 
+	void showPurchaseSuccessMessage(String message, Product product);
+
 }
