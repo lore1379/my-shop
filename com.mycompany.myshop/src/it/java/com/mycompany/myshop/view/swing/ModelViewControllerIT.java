@@ -32,7 +32,6 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 	private MongoClient mongoClient;
 
 	private ShopMongoRepository shopRepository;
-	private ShopSwingView shopSwingView;
 	private ShopController shopController;
 	private FrameFixture window;
 	
@@ -49,13 +48,12 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		database.drop();
 		productCollection = database.getCollection("product");
 		cartCollection = database.getCollection("cart");
-		GuiActionRunner.execute(() -> {
-			shopSwingView = new ShopSwingView();
+		window = new FrameFixture(robot(), GuiActionRunner.execute(() -> {
+			ShopSwingView shopSwingView = new ShopSwingView();
 			shopController = new ShopController(shopSwingView, shopRepository);
 			shopSwingView.setShopController(shopController);
 			return shopSwingView;
-		});
-		window = new FrameFixture(robot(), shopSwingView);
+		}));
 		window.show();
 	}
 	
