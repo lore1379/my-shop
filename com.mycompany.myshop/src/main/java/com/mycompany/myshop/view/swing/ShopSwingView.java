@@ -31,6 +31,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 	private JLabel lblErrorMessage;
 	private JButton btnRemoveFromCart;
 	private JButton btnCheckoutProduct;
+	private JLabel lblSuccessMessage;
 	
 	private DefaultListModel<Product> listShopProductsModel;
 	private DefaultListModel<Product> listCartProductsModel;
@@ -156,14 +157,14 @@ public class ShopSwingView extends JFrame implements ShopView {
 		gbc_label.gridy = 6;
 		contentPane.add(lblErrorMessage, gbc_label);
 		
-		JLabel label = new JLabel(" ");
-		label.setName("purchaseSuccessMessageLabel");
+		lblSuccessMessage = new JLabel(" ");
+		lblSuccessMessage.setName("purchaseSuccessMessageLabel");
 		GridBagConstraints gbc_lblSuccess = new GridBagConstraints();
 		gbc_lblSuccess.gridwidth = 2;
 		gbc_lblSuccess.insets = new Insets(0, 0, 0, 5);
 		gbc_lblSuccess.gridx = 0;
 		gbc_lblSuccess.gridy = 7;
-		contentPane.add(label, gbc_lblSuccess);
+		contentPane.add(lblSuccessMessage, gbc_lblSuccess);
 	}
 
 	DefaultListModel<Product> getListShopProductModel() {
@@ -213,8 +214,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 
 	@Override
 	public void showPurchaseSuccessMessage(String message, Product product) {
-		// TODO Auto-generated method stub
-		
+		lblSuccessMessage.setText(message + ": " + product);
 	}
 
 
