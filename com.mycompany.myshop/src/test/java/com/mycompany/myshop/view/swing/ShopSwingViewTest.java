@@ -316,4 +316,16 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase {
 			.requireText(" ");
 	}
 	
+	@Test
+	public void testShowErrorProductNotFoundShouldAlsoResetTheSuccessLabel() {
+		Product purchasedProduct = new Product("1", "purchased");
+		Product nonExistingProduct = new Product("2", "nonExisting");
+		GuiActionRunner.execute(() -> {
+			shopSwingView.showPurchaseSuccessMessage("success message", purchasedProduct);
+			shopSwingView.showErrorProductNotFound("error message", nonExistingProduct);
+		});
+		window.label("purchaseSuccessMessageLabel")
+			.requireText(" ");
+	}
+	
 }
