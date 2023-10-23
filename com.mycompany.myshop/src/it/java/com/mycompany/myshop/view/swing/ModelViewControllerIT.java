@@ -98,6 +98,17 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		
 	}
 	
+	@Test
+	public void testCheckoutProduct() {
+		addTestCartToDatabase(USER_CART_ID, "2", "test2", "3", "test3");
+		GuiActionRunner.execute( () ->
+			shopController.getCart(USER_CART_ID));
+		window.list("productListInCart").selectItem(0);
+		window.button(JButtonMatcher.withText("Checkout Product")).click();
+		assertThat(shopRepository.productFoundInCart(USER_CART_ID, "2"))
+			.isFalse();
+	}
+	
 	private void addTestCartToDatabase(String cartId, String firstProductId, 
 			String firstProductName, String secondProductId, String secondProductName) {
 		cartCollection.insertOne(
