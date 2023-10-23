@@ -53,9 +53,9 @@ public class ShopSwingView extends JFrame implements ShopView {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JLabel lblShop = new JLabel("Shop");
@@ -150,11 +150,20 @@ public class ShopSwingView extends JFrame implements ShopView {
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setName("errorMessageLabel");
 		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.insets = new Insets(0, 0, 5, 0);
 		gbc_label.gridwidth = 2;
-		gbc_label.insets = new Insets(0, 0, 0, 5);
 		gbc_label.gridx = 0;
 		gbc_label.gridy = 6;
 		contentPane.add(lblErrorMessage, gbc_label);
+		
+		JLabel label = new JLabel(" ");
+		label.setName("purchaseSuccessMessageLabel");
+		GridBagConstraints gbc_lblSuccess = new GridBagConstraints();
+		gbc_lblSuccess.gridwidth = 2;
+		gbc_lblSuccess.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSuccess.gridx = 0;
+		gbc_lblSuccess.gridy = 7;
+		contentPane.add(label, gbc_lblSuccess);
 	}
 
 	DefaultListModel<Product> getListShopProductModel() {
