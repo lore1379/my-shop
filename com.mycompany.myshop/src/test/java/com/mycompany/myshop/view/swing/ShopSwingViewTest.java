@@ -304,4 +304,16 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase {
 			.requireText(" ");
 	}
 	
+	@Test
+	public void testProductRemovedFromCartShouldAlsoResetTheSuccessLabel() {
+		Product purchasedProduct = new Product("1", "purchased");
+		Product product = new Product("2", "existing");
+		GuiActionRunner.execute(() -> {
+			shopSwingView.showPurchaseSuccessMessage("success message", purchasedProduct);
+			shopSwingView.productRemovedFromCart(product);
+		});
+		window.label("purchaseSuccessMessageLabel")
+			.requireText(" ");
+	}
+	
 }
