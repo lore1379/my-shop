@@ -153,6 +153,24 @@ public class ShopMongoRepositoryTest {
 					.append("name", "test2"));
 			
 	}
+	
+	@Test
+	public void testMoveProductToShopWhenProductIsNotFoundInCart() {
+		Cart cart = new Cart("1");
+		addTestCartToDatabase("1", "2", "test2", "3", "test3");
+		shopRepository.moveProductToShop("1", "4");
+		assertThat(readAllProductsFromDatabase())
+			.isEmpty();
+		assertThat(getCartProductList(cart))
+			.containsExactly(
+					new Document()
+					.append("id", "2")
+					.append("name", "test2"),
+					new Document()
+					.append("id", "3")
+					.append("name", "test3"));
+			
+	}
 
 	
 	@Test
