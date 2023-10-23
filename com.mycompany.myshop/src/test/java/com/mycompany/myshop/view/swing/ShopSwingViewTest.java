@@ -155,7 +155,7 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testProductAddedToCartShouldAlsoResetTheErrorLabel() {
 		Product nonExistingProduct = new Product("1", "nonExisting");
-		Product existingProduct = new Product("1", "existing");
+		Product existingProduct = new Product("2", "existing");
 		GuiActionRunner.execute(() -> {
 			shopSwingView.showErrorProductNotFound("error message", nonExistingProduct);
 			shopSwingView.productAddedToCart(existingProduct);
@@ -290,6 +290,18 @@ public class ShopSwingViewTest extends AssertJSwingJUnitTestCase {
 		);
 		window.label("purchaseSuccessMessageLabel")
 			.requireText("success message: " + product);
+	}
+	
+	@Test
+	public void testProductAddedToCartShouldAlsoResetTheSuccessLabel() {
+		Product purchasedProduct = new Product("1", "purchased");
+		Product product = new Product("2", "existing");
+		GuiActionRunner.execute(() -> {
+			shopSwingView.showPurchaseSuccessMessage("success message", purchasedProduct);
+			shopSwingView.productAddedToCart(product);
+		});
+		window.label("purchaseSuccessMessageLabel")
+			.requireText(" ");
 	}
 	
 }
