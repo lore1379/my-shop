@@ -191,6 +191,7 @@ public class ShopSwingView extends JFrame implements ShopView {
 		listShopProductsModel.removeElement(product);
 		listCartProductsModel.addElement(product);
 		lblErrorMessage.setText(" ");
+		lblSuccessMessage.setText(" ");
 	}
 
 	@Override
