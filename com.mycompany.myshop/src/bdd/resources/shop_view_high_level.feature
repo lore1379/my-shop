@@ -28,3 +28,10 @@ Feature: Shop View High Level
     When The user clicks the "Checkout Product" button
     Then The product is removed from the cart list
     And A successful purchase message is shown containing the name of the selected product
+    
+  Scenario: Checkout a not existing product from cart
+    Given The user selects a product from the cart list
+    But The product is in the meantime removed from the cart in the database
+    When The user clicks the "Checkout Product" button
+    Then An error is shown containing the name of the selected product in the cart
+    And The product is removed from the cart list
