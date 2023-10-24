@@ -19,8 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.util.List;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class ShopSwingView extends JFrame implements ShopView {
 
@@ -136,11 +134,8 @@ public class ShopSwingView extends JFrame implements ShopView {
 		contentPane.add(btnRemoveFromCart, gbc_btnRemoveFromCart);
 		
 		btnCheckoutProduct = new JButton("Checkout Product");
-		btnCheckoutProduct.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				shopController.checkoutProductFromCart(USER_CART_ID, listCartProducts.getSelectedValue());
-			}
-		});
+		btnCheckoutProduct.addActionListener(
+				e -> shopController.checkoutProductFromCart(USER_CART_ID, listCartProducts.getSelectedValue()));
 		btnCheckoutProduct.setEnabled(false);
 		GridBagConstraints gbc_btnCheckoutProduct = new GridBagConstraints();
 		gbc_btnCheckoutProduct.insets = new Insets(0, 0, 5, 0);
