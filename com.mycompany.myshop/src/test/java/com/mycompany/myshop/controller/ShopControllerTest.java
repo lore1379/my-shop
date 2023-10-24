@@ -109,5 +109,16 @@ public class ShopControllerTest {
 		inOrder.verify(shopView)
 			.showPurchaseSuccessMessage("Successfully purchased product with id 2", productToCheckout);
 	}
+	
+	@Test
+	public void testCheckoutProductFromCartWhenProductDoesNotExist() {
+		Product product = new Product("1", "test");
+		when(shopRepository.productFoundInCart(USER_CART_ID, "1"))
+			.thenReturn(false);
+		shopController.checkoutProductFromCart(USER_CART_ID, product);
+		verify(shopView)
+			.showErrorProductNotFound("No available product with id 1", product);
+		verifyNoMoreInteractions(ignoreStubs(shopRepository));
+	}
 
 }
