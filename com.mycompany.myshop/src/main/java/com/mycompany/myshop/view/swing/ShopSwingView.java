@@ -192,7 +192,10 @@ public class ShopSwingView extends JFrame implements ShopView {
 	@Override
 	public void showErrorProductNotFound(String message, Product product) {
 		lblErrorMessage.setText(message + ": " + product);
-		listShopProductsModel.removeElement(product);
+		if (listShopProductsModel.contains(product))
+			listShopProductsModel.removeElement(product);
+		else
+			listCartProductsModel.removeElement(product);
 		lblSuccessMessage.setText(" ");
 	}
 
