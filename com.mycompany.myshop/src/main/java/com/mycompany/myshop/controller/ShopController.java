@@ -46,6 +46,9 @@ public class ShopController {
 			shopView.productPurchased(product);
 			shopView.showPurchaseSuccessMessage("Successfully purchased product with id " + product.getId(),
 					product);
+		} else {
+			shopView.showErrorProductNotFound("No available product with id " + product.getId(),
+					product);
 		}
 			
 	}
