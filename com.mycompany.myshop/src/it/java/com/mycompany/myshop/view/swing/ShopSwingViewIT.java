@@ -170,6 +170,9 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 		window.button(JButtonMatcher.withText("Checkout Product")).click();
 		assertThat(window.list("productListInCart").contents())
 			.isEmpty();
+		window.label("purchaseSuccessMessageLabel")
+			.requireText("Successfully purchased product with id 2: " + 
+					new Product("2", "test2"));
 	}
 
 }
