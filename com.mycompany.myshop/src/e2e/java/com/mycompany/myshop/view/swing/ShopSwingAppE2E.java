@@ -129,6 +129,8 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 		assertThat(window.list("productListInCart").contents())
 			.noneMatch(e -> 
 				e.contains(PRODUCT_FIXTURE_3_NAME));
+		assertThat(window.label("purchaseSuccessMessageLabel").text())
+			.contains(PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME);
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
