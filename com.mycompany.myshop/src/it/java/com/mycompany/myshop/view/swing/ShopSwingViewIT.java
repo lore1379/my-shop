@@ -174,5 +174,19 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 			.requireText("Successfully purchased product with id 2: " + 
 					new Product("2", "test2"));
 	}
+	
+	@Test @GUITest
+	public void testCheckoutProductButtonError() {
+		Product product = new Product("1", "nonExistent");
+		GuiActionRunner.execute( () ->
+			shopSwingView.getListCartProductModel().addElement(product)
+		);
+		window.list("productListInCart").selectItem(0);
+		window.button(JButtonMatcher.withText("Checkout Product")).click();
+		window.label("errorMessageLabel")
+			.requireText("No available product with id 1: " + product);
+		assertThat(window.list("productListInCart").contents())
+			.isEmpty();
+	}
 
 }
