@@ -139,15 +139,19 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 	public void testCheckoutProductButtonError() {
 		window.list("productListInCart")
 			.selectItem(Pattern.compile(".*" + PRODUCT_FIXTURE_3_NAME + ".*"));
-		Bson cartFilter = Filters.eq("id", CART_FIXTURE_10_ID);
-		Bson updateFilter = Updates.pull("productList", Filters.eq("id", PRODUCT_FIXTURE_3_ID));
+		removeTestProductFromCartInDatabase(CART_FIXTURE_10_ID, PRODUCT_FIXTURE_3_ID);
+	    window.button(JButtonMatcher.withText("Checkout Product")).click();
+	    assertThat(window.label("errorMessageLabel").text())
+			.contains(PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME);
+	}
+
+	private void removeTestProductFromCartInDatabase(String cartId, String productId) {
+		Bson cartFilter = Filters.eq("id", cartId);
+		Bson updateFilter = Updates.pull("productList", Filters.eq("id", productId));
 	    mongoClient
 	    	.getDatabase(DB_NAME)
 	    	.getCollection(CART_COLLECTION_NAME)
 	    	.updateOne(cartFilter, updateFilter);
-	    window.button(JButtonMatcher.withText("Checkout Product")).click();
-	    assertThat(window.label("errorMessageLabel").text())
-			.contains(PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME);
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
