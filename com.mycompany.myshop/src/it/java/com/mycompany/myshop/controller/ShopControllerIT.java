@@ -108,6 +108,9 @@ public class ShopControllerIT {
 		shopController.checkoutProductFromCart(cart.getId(), productToCheckout);
 		verify(shopView)
 			.productPurchased(productToCheckout);
+		verify(shopView)
+			.showPurchaseSuccessMessage("Successfully purchased product with id " + 
+					productToCheckout.getId(), productToCheckout);
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
