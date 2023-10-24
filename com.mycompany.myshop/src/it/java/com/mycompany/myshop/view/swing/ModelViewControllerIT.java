@@ -82,6 +82,8 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Add to Cart")).click();
 		assertThat(shopRepository.findCart(USER_CART_ID))
 			.isEqualTo(cart);
+		assertThat(shopRepository.findProductById("1"))
+			.isNull();
 	}
 	
 	@Test
@@ -93,6 +95,8 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		window.button(JButtonMatcher.withText("Remove from Cart")).click();
 		assertThat(shopRepository.productFoundInCart(USER_CART_ID, "2"))
 			.isFalse();
+		assertThat(shopRepository.findProductById("2"))
+			.isEqualTo(new Product("2", "test2"));
 		
 	}
 	
