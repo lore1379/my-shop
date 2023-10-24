@@ -125,5 +125,11 @@ public class ShopSwingViewSteps {
 	    assertThat(window.label("purchaseSuccessMessageLabel").text())
 	    	.contains(PRODUCT_FIXTURE_3_NAME);
 	}
+	
+	@Then("An error is shown containing the name of the selected product in the cart")
+	public void an_error_is_shown_containing_the_name_of_the_selected_product_in_the_cart() {
+		assertThat(window.label("errorMessageLabel").text())
+    		.contains(PRODUCT_FIXTURE_3_NAME);
+	}
 
 }
