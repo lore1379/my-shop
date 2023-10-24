@@ -34,6 +34,8 @@ public class ShopSwingApp implements Callable<Void>{
 	
 	@Option(names = { "--cart-collection" }, description = "Cart collection name")
 	private String cartCollectionName = "cart";
+
+	private MongoClient mongoClient;
 	
 	public static void main(String[] args) {
 		new CommandLine(new ShopSwingApp()).execute(args);
@@ -43,9 +45,9 @@ public class ShopSwingApp implements Callable<Void>{
 	public Void call() throws Exception {
 		EventQueue.invokeLater(() -> {
 			try {
+				mongoClient = new MongoClient(new ServerAddress(mongoHost, mongoPort));
 				ShopMongoRepository shopRepository = new ShopMongoRepository(
-						new MongoClient(new ServerAddress(mongoHost, mongoPort)),
-						databaseName, productCollectionName, cartCollectionName);
+						mongoClient, databaseName, productCollectionName, cartCollectionName);
 				ShopSwingView shopView = new ShopSwingView();
 				ShopController shopController = 
 						new ShopController(shopView, shopRepository);

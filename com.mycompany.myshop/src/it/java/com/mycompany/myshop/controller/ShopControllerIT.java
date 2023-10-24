@@ -39,11 +39,13 @@ public class ShopControllerIT {
 	
 	private MongoCollection<Document> productCollection;
 	private MongoCollection<Document> cartCollection;
+
+	private MongoClient mongoClient;
 	
 	@Before
 	public void setup() {
 		closeable = MockitoAnnotations.openMocks(this);
-		MongoClient mongoClient = new MongoClient(
+		mongoClient = new MongoClient(
 				new ServerAddress("localhost", mongoPort));
 		shopRepository = new ShopMongoRepository(mongoClient,
 				"shop", "product", "cart");
@@ -55,8 +57,9 @@ public class ShopControllerIT {
 	}
 	
 	@After
-	public void releaseMocks() throws Exception {
+	public void onTearDown() throws Exception {
 		closeable.close();
+		mongoClient.close();		
 	}
 	
 	@Test
