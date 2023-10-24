@@ -3,10 +3,12 @@ package com.mycompany.myshop.bdd.steps;
 import static java.util.Arrays.asList;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -74,6 +76,16 @@ public class DatabaseSteps {
 						new Document()
 						.append("id", PRODUCT_FIXTURE_4_ID)
 						.append("name", PRODUCT_FIXTURE_4_NAME))));
+	}
+	
+	@Given("The product is in the meantime removed from the cart in the database")
+	public void the_product_is_in_the_meantime_removed_from_the_cart_in_the_database() {
+		Bson cartFilter = Filters.eq("id", CART_FIXTURE_10_ID);
+		Bson updateFilter = Updates.pull("productList", Filters.eq("id", PRODUCT_FIXTURE_3_ID));
+	    mongoClient
+	    	.getDatabase(DB_NAME)
+	    	.getCollection(CART_COLLECTION_NAME)
+	    	.updateOne(cartFilter, updateFilter);
 	}
 	
 	private void addTestProductToDatabase(String id, String name) {
