@@ -16,12 +16,14 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 @RunWith(GUITestRunner.class)
 public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
@@ -130,6 +132,21 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 			.noneMatch(e -> 
 				e.contains(PRODUCT_FIXTURE_3_NAME));
 		assertThat(window.label("purchaseSuccessMessageLabel").text())
+			.contains(PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME);
+	}
+	
+	@Test @GUITest
+	public void testCheckoutProductButtonError() {
+		window.list("productListInCart")
+			.selectItem(Pattern.compile(".*" + PRODUCT_FIXTURE_3_NAME + ".*"));
+		Bson cartFilter = Filters.eq("id", CART_FIXTURE_10_ID);
+		Bson updateFilter = Updates.pull("productList", Filters.eq("id", PRODUCT_FIXTURE_3_ID));
+	    mongoClient
+	    	.getDatabase(DB_NAME)
+	    	.getCollection(CART_COLLECTION_NAME)
+	    	.updateOne(cartFilter, updateFilter);
+	    window.button(JButtonMatcher.withText("Checkout Product")).click();
+	    assertThat(window.label("errorMessageLabel").text())
 			.contains(PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME);
 	}
 	
