@@ -10,8 +10,10 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.bson.Document;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.testcontainers.containers.MongoDBContainer;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
@@ -27,8 +29,9 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 	
 	private static final String USER_CART_ID = "10";
 	
-	private static int mongoPort =
-			Integer.parseInt(System.getProperty("mongo.port", "27017"));
+	@ClassRule
+	public static final MongoDBContainer mongo =
+		new MongoDBContainer("mongo:4.4.3");
 	
 	private MongoClient mongoClient;
 
@@ -44,7 +47,9 @@ public class ShopSwingViewIT extends AssertJSwingJUnitTestCase{
 	@Override
 	protected void onSetUp() throws Exception {
 		mongoClient = new MongoClient(
-				new ServerAddress("localhost", mongoPort));
+				new ServerAddress(
+						mongo.getHost(),
+						mongo.getFirstMappedPort()));
 		shopRepository = new ShopMongoRepository(mongoClient,
 				"shop", "product", "cart");
 		MongoDatabase database = mongoClient.getDatabase("shop");

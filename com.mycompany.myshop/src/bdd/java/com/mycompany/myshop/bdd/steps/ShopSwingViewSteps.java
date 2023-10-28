@@ -15,6 +15,7 @@ import org.assertj.swing.fixture.FrameFixture;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mycompany.myshop.bdd.ShopSwingAppBDD;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -31,19 +32,23 @@ public class ShopSwingViewSteps {
 	private static final String PRODUCT_FIXTURE_1_ID = "1";
 	private static final String PRODUCT_FIXTURE_1_NAME = "test1";
 	private static final String PRODUCT_FIXTURE_3_ID = "3";
-	private static final String PRODUCT_FIXTURE_3_NAME = "test3";
-	
-	private static int mongoPort = 
-			Integer.parseInt(System.getProperty("mongo.port", "27017"));
+	private static final String PRODUCT_FIXTURE_3_NAME = "test3";	
 	
 	private MongoClient mongoClient;
 	
 	private FrameFixture window;
 	
+	private String containerIpAddress;
+	private Integer mappedPort;
+	
 	@Before
 	public void setUp() {
+		containerIpAddress = ShopSwingAppBDD.getContainerIpAddress();
+		mappedPort = ShopSwingAppBDD.getMappedPort();
 		mongoClient = new MongoClient(
-				new ServerAddress("localhost", mongoPort));
+				new ServerAddress(
+						containerIpAddress,
+						mappedPort));
 		mongoClient.getDatabase(DB_NAME).drop();
 	}
 	
@@ -58,8 +63,8 @@ public class ShopSwingViewSteps {
 	public void the_Shop_View_is_shown() {
 	    application("com.mycompany.myshop.app.swing.ShopSwingApp")
 	    .withArgs(
-    		"--mongo-host=" + "localhost",
-			"--mongo-port=" + Integer.toString(mongoPort),
+    		"--mongo-host=" + containerIpAddress,
+			"--mongo-port=" + mappedPort.toString(),
 			"--db-name=" + DB_NAME,
 			"--product-collection=" + PRODUCT_COLLECTION_NAME,
 			"--cart-collection=" + CART_COLLECTION_NAME

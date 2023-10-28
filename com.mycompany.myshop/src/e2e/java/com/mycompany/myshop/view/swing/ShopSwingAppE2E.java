@@ -17,8 +17,10 @@ import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.testcontainers.containers.MongoDBContainer;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
@@ -42,8 +44,9 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 	private static final String PRODUCT_FIXTURE_4_ID = "4";
 	private static final String PRODUCT_FIXTURE_4_NAME = "test4";
 
-	private static int mongoPort =
-			Integer.parseInt(System.getProperty("mongo.port", "27017"));
+	@ClassRule
+	public static final MongoDBContainer mongo =
+		new MongoDBContainer("mongo:4.4.3");
 	
 	private MongoClient mongoClient;
 
@@ -51,16 +54,18 @@ public class ShopSwingAppE2E extends AssertJSwingJUnitTestCase {
 
 	@Override
 	protected void onSetUp() throws Exception {
+		String containerIpAddress = mongo.getHost();
+		Integer mappedPort = mongo.getFirstMappedPort();
 		mongoClient = new MongoClient(
-				new ServerAddress("localhost", mongoPort));
+				new ServerAddress(containerIpAddress, mappedPort));
 		mongoClient.getDatabase(DB_NAME).drop();
 		addTestProductToDatabase(PRODUCT_FIXTURE_1_ID, PRODUCT_FIXTURE_1_NAME);
 		addTestProductToDatabase(PRODUCT_FIXTURE_2_ID, PRODUCT_FIXTURE_2_NAME);
 		addTestCartWithProductsToDatabase(CART_FIXTURE_10_ID, PRODUCT_FIXTURE_3_ID, PRODUCT_FIXTURE_3_NAME, PRODUCT_FIXTURE_4_ID, PRODUCT_FIXTURE_4_NAME);
 		application("com.mycompany.myshop.app.swing.ShopSwingApp")
 			.withArgs(
-				"--mongo-host=" + "localhost",
-				"--mongo-port=" + Integer.toString(mongoPort),
+				"--mongo-host=" + containerIpAddress,
+				"--mongo-port=" + mappedPort.toString(),
 				"--db-name=" + DB_NAME,
 				"--product-collection=" + PRODUCT_COLLECTION_NAME,
 				"--cart-collection=" + CART_COLLECTION_NAME

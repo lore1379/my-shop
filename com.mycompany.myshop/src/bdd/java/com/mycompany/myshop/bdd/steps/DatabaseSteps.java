@@ -9,15 +9,13 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import com.mycompany.myshop.bdd.ShopSwingAppBDD;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 
 public class DatabaseSteps {
-
-	private static int mongoPort =
-			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
 	private MongoClient mongoClient;
 	
@@ -37,8 +35,12 @@ public class DatabaseSteps {
 	
 	@Before
 	public void setUp() {
+		String containerIpAddress = ShopSwingAppBDD.getContainerIpAddress();
+		Integer mappedPort = ShopSwingAppBDD.getMappedPort();
 		mongoClient = new MongoClient(
-				new ServerAddress("localhost", mongoPort));
+				new ServerAddress(
+						containerIpAddress,
+						mappedPort));
 		mongoClient.getDatabase(DB_NAME).drop();
 	}
 

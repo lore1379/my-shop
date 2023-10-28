@@ -6,10 +6,12 @@ import static java.util.Arrays.asList;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.testcontainers.containers.MongoDBContainer;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
@@ -24,8 +26,9 @@ public class ShopControllerIT {
 	
 	private static final String USER_CART_ID = "10";
 	
-	private static int mongoPort =
-			Integer.parseInt(System.getProperty("mongo.port", "27017"));
+	@ClassRule
+	public static final MongoDBContainer mongo =
+		new MongoDBContainer("mongo:4.4.3");
 	
 	@Mock
 	private ShopView shopView;
@@ -46,7 +49,9 @@ public class ShopControllerIT {
 	public void setup() {
 		closeable = MockitoAnnotations.openMocks(this);
 		mongoClient = new MongoClient(
-				new ServerAddress("localhost", mongoPort));
+				new ServerAddress(
+						mongo.getHost(),
+						mongo.getFirstMappedPort()));
 		shopRepository = new ShopMongoRepository(mongoClient,
 				"shop", "product", "cart");
 		MongoDatabase database = mongoClient.getDatabase("shop");

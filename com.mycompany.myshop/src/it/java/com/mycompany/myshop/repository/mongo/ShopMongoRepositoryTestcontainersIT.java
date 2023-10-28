@@ -10,7 +10,9 @@ import java.util.stream.StreamSupport;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.testcontainers.containers.MongoDBContainer;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
@@ -20,10 +22,11 @@ import com.mongodb.client.model.Filters;
 import com.mycompany.myshop.model.Cart;
 import com.mycompany.myshop.model.Product;
 
-public class ShopMongoRepositoryDockerIT {
+public class ShopMongoRepositoryTestcontainersIT {
 	
-	private static int mongoPort =
-			Integer.parseInt(System.getProperty("mongo.port", "27017"));
+	@ClassRule
+	public static final MongoDBContainer mongo =
+		new MongoDBContainer("mongo:4.4.3");
 	
 	private MongoClient mongoClient;
 	private ShopMongoRepository shopRepository;
@@ -33,7 +36,9 @@ public class ShopMongoRepositoryDockerIT {
 	@Before
 	public void setup() {
 		mongoClient = new MongoClient(
-				new ServerAddress("localhost", mongoPort));
+				new ServerAddress(
+						mongo.getHost(),
+						mongo.getFirstMappedPort()));
 		shopRepository = new ShopMongoRepository(mongoClient,
 				"shop", "product", "cart");
 		MongoDatabase database = mongoClient.getDatabase("shop");

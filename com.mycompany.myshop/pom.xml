@@ -35,6 +35,7 @@
     <docker.version>0.34.1</docker.version>
     <picocli.version>4.7.5</picocli.version>
     <pitest.version>1.7.5</pitest.version>
+    <testcontainers.version>1.19.1</testcontainers.version>
     
     <!-- Exclude model from sonarCloud code coverage -->
     <sonar.coverage.exclusions>
@@ -127,6 +128,12 @@
       <version>${mongo.java.server.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>mongodb</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency> 
   </dependencies>
   
   <build>
@@ -236,11 +243,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>${failsafe.version}</version>
-        <configuration>
-          <systemPropertyVariables>
-            <mongo.port>${mongo.mapped.port}</mongo.port>
-          </systemPropertyVariables>
-        </configuration>
         <executions>
           <execution>
             <id>default-it</id>
@@ -278,39 +280,6 @@
                 <include>**/*BDD.java</include>
               </includes>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>${docker.version}</version>
-        <configuration>
-          <images>
-            <image>
-              <name>mongo:4.4.3</name>
-              <run>
-                <ports>
-                  <port>mongo.mapped.port:27017</port>
-                </ports>
-              </run>
-            </image>
-          </images>
-        </configuration>
-        <executions>
-          <execution>
-            <id>docker:start</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>start</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>docker:stop</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>stop</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
