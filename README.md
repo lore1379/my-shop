@@ -9,10 +9,6 @@ L'elaborato è eseguito su GitHub Actions (Java 8, Java 11, Java 17) e usa le se
 - PIT: framework per il mutation testing. 
 - Cucumber: tool per il supporto del Behavior-Driven Development
 
-Per eseguire i test singolarmente è necessario lanciare MongoDB in un Docker container: 
-
-docker run -p 27017:27017 --rm mongo:4.4.3
-
 Per eseguire la build Maven è necessario lanciare il comando: mvn verify
 
 La documentazione dettagliata si trova nel file [Report.pdf
