@@ -1,4 +1,5 @@
 # Elaborato ATTSW: my-shop
+
 Prototipo Maven di un semplice sito di e-commerce realizzato per l'esame di ATTSW usando il Behavior-driven development (BDD) process.
 L'elaborato è eseguito su GitHub Actions (Java 8, Java 11, Java 17) e usa le seguenti tecnologie: 
 - JUnit: framework di test.
