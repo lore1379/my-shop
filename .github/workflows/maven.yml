@@ -21,7 +21,7 @@ jobs:
 
     name: Build with Java ${{ matrix.java }} on Linux
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         # Shallow clones should be disabled for a better relevancy of SonarQube analysis
         fetch-depth: 0
